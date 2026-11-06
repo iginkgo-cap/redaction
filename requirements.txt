@@ -1,0 +1,22 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.9.0
+pydantic-settings>=2.6.0
+transformers>=4.46.0,<5.0.0
+torch>=2.4.0
+gliner>=0.2.0
+# knowledgator 主力走 ONNX-INT8（GLiNER.from_pretrained(load_onnx_model=True)）必需。
+# torch 仍保留：gliner 库 import 即依赖 torch，且 HanLP 中文 NER 依赖 torch。
+onnxruntime>=1.17.0
+regex>=2024.0.0
+python-stdnum>=1.20.0
+# S6 (round11): SWIFT_BIC 国家码校验（ISO 3166 公开数据源，随 ISO 更新）
+pycountry>=24.0.0
+structlog>=24.0.0
+pyyaml>=6.0
+# LOOK-6874 v2 映射库：Postgres 驱动 + 连接池、实体值加密；boto3 只在 REDACTION_KEY_SOURCE=secretsmanager 时用
+psycopg[binary,pool]>=3.2.0
+cryptography>=43.0.0
+boto3>=1.34.0
+# LOOK-6876 PDF file 项：引擎是本仓库 file-masker/（Dockerfile 里单独打 wheel、不装 [web,mail]），版本与其 pyproject 一致
+pymupdf==1.24.10

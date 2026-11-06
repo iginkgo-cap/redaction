@@ -1,0 +1,16 @@
+__pycache__/
+*.egg-info/
+.venv/
+dist/
+build/
+file_masker/web/static/
+frontend/node_modules/
+
+# 邮件模式配置（含密码）：mail.local.toml 本机、mail.toml 生产；只提交 mail.example.toml
+mail.toml
+mail.local.toml
+
+# IDE
+.idea/
+mail.toml.*
+data/

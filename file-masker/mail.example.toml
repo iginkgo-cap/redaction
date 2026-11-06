@@ -1,0 +1,45 @@
+# 邮件模式配置示例：复制为 mail.toml 后填写（mail.toml 已在 .gitignore 中）。
+# 启动：MAIL_CONFIG=./mail.toml uvicorn file_masker.web.app:app --port 8080
+# 打码规则不在这里配置，启动后在 /mail 页面上按租户配置（存 SQLite）。
+
+[run]
+poll_seconds = 60
+output_root = "/srv/masked"      # 落盘根目录：<output_root>/<tenant>/<mailbox>/<YYYY-MM-DD>/<dir-id>/
+retain_days = 90                 # 落盘目录、原件与处理记录的保留天数
+# originals_root = "/srv/originals"  # 有内容没能打码（被跳过的附件、去掉的图片、扣留）时整封原件存这里；不能在 output_root 里面，不配则不存
+timezone = "Asia/Shanghai"       # 日期目录按此时区换算
+max_per_poll = 50                # 每轮每邮箱最多处理（未处理的）邮件数
+lookback_minutes = 10            # 常规轮询回退窗口
+
+[oauth.google]                   # 有 provider = "gmail" 的邮箱时必填（你自己 GCP 项目里的 OAuth 客户端）
+client_id = "<your-client-id>.apps.googleusercontent.com"
+client_secret = ""
+# redirect_uri = "http://localhost:18090/api/mail/oauth/callback"   # 默认值；须在 GCP 凭据里注册
+
+[oauth.microsoft]                # 有 provider = "graph" 的邮箱时必填（公共客户端，不需要 secret）
+client_id = "<your-azure-app-client-id>"
+tenant = "<your-tenant-id>"            # 多租户应用可填 organizations
+
+[[tenant]]
+code = "lq"                      # Ginkgo 租户 code，只允许字母、数字、-（不区分大小写去重）；是落盘目录第一层
+  [[tenant.mailbox]]
+  address = "lq-ops@example.com"
+  provider = "gmail"             # 授权在 /mail 页面完成
+  # since = 2026-10-01           # 可选：首次运行回溯起点（只在首次生效）
+
+[[tenant]]
+code = "look"
+  [[tenant.mailbox]]
+  address = "ops@look.example"
+  provider = "graph"
+
+[[tenant]]
+code = "demo"                    # DEMO 的两个 Lark 邮箱：IMAP 取件，SMTP 投递
+  [[tenant.mailbox]]
+  address = "demo_mask_source@example.com"
+  provider = "imap"
+  password = "lark-app-password"
+  # imap_host = "imap.larksuite.com"   # 默认 Lark，993 SSL
+  # smtp_host = "smtp.larksuite.com"   # 默认 Lark，465 SSL
+  sink = "smtp"                  # 默认 fs（落盘）
+  smtp_to = "demo_mask_target@example.com"

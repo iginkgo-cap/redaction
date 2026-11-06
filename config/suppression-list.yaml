@@ -1,0 +1,163 @@
+# S1 全局值抑制名单（round11）—— 命中即 drop 该识别结果、不脱敏
+# 匹配口径：NFKC 归一 + strip + lower 精确匹配（app/precision.py::SuppressionList）
+# 段结构：suppress.<CANONICAL_KIND> 仅对该 kind 生效；suppress."*" 对所有 kind 生效
+#
+# ⚠️ 维护规则（避免死名单）：
+#   1. 基座层 = 闭集/公开数据源可枚举条目（大洲大区、ISO 语义集）——更新时对照公开源
+#   2. overlay 层 = 生产 bad case 增量，每条注明来源与日期，总量控制在百条内；
+#      能被结构规则（app/precision.py S2/S3）覆盖的误报不要加进名单
+#   3. 具体人名慎入（全局生效、无租户维度）；公司/媒体/产品名安全
+#   4. 大批量名单（如英文 given-name gazetteer）不放这里，走 scripts/build_gazetteer.py
+#      生成 config/gazetteer/*（Phase 2）
+
+suppress:
+  # ── ORG：原 F7 ORG_PUBLIC 白名单迁入（app/merge.py 硬编码 → 此处，语义不变）──
+  # 公开上市公司/顶级投行/离岸服务机构：市场公开信息，脱敏反而破坏 LLM 分析能力
+  ORG:
+    # A 股 / 港股 / 美股 上市公司
+    - 贵州茅台
+    - 宁德时代
+    - 腾讯控股
+    - 腾讯
+    - 阿里巴巴
+    - 阿里
+    - 美团
+    - 台积电
+    - 五粮液
+    - 上海复星医药股份有限公司
+    - 复星医药
+    # 已上市投行 / 券商 / 资管 / 银行
+    - 招商证券股份有限公司
+    - 招商证券
+    - 招商银行
+    - 招商银行北京西单支行
+    - 招商银行北京海淀支行
+    - 招商银行香港分行
+    - 招商银行托管部
+    - 中信信托
+    - 中信证券
+    - 中信集团
+    - 中信银行
+    - 中金资管
+    - 中金公司
+    - 工商银行
+    - 中国银行
+    - 建设银行
+    - 农业银行
+    - 交通银行
+    # 顶级国际投行 / 商行
+    - goldman sachs
+    - goldman sachs asia llc
+    - goldman sachs group inc.
+    - hsbc
+    - hsbc hong kong
+    - hsbc hk
+    - hsbc holdings plc
+    - chase bank
+    - chase bank ny
+    - jpmorgan chase
+    - standard chartered
+    - standard chartered singapore
+    - dbs
+    - dbs singapore
+    - dbs bank
+    - ubs
+    - ubs ag
+    - credit suisse
+    - deutsche bank
+    - bank of america
+    - bofa
+    - wells fargo
+    - citi
+    - citibank
+    - barclays
+    - barclays bank plc
+    # 顶级离岸服务机构 / 信托服务
+    - maples corporate services limited
+    - maples
+    - mourant
+    - ocorian trust services ltd.
+    - ocorian
+    - intertrust
+    - tmf group
+    - appleby
+    - walkers
+
+  # ── ADDRESS：大洲/大区/超国家实体（闭集，基座层）+ 通用词（overlay）──
+  # 粒度粗到无法定位个人，非 PII。生产 exclusion 中大洲名被用户取消 9 次。
+  ADDRESS:
+    # 大洲/大区（闭集）
+    - 亚洲
+    - 欧洲
+    - 非洲
+    - 北美
+    - 南美
+    - 北美洲
+    - 南美洲
+    - 大洋洲
+    - 南极洲
+    - 中东
+    - 亚太
+    - 亚太地区
+    - 东南亚
+    - 东亚
+    - 南亚
+    - 西欧
+    - 北欧
+    - 东欧
+    - 南欧
+    - 欧盟
+    - 拉美
+    - 拉丁美洲
+    - asia
+    - europe
+    - africa
+    - north america
+    - south america
+    - latin america
+    - oceania
+    - middle east
+    - southeast asia
+    - apac
+    - emea
+    - european union
+    # 通用指代词（生产导出 2026-07-02：被识别为 ADDRESS 的字段名）
+    - mailing address
+    - residential address
+    - registered address
+    - home address
+
+  # ── PERSON：媒体/公司/产品名被 NER 误标 PERSON（overlay，生产导出 2026-07-02）──
+  PERSON:
+    - 福布斯        # 媒体（exclusion 取消 ×2）
+    - openai       # 公司（exclusion 取消 ×2）
+    - obsidian     # 笔记软件（字典误报）
+    - markdown     # 格式名（字典误报）
+    - claude       # AI 产品名；Claude 亦为法语人名，本业务语境按产品处理（字典误报）
+    - claudian     # Claude 衍生词（字典误报）
+    - yarle        # 导出工具名（字典误报）
+    - enex         # Evernote 导出格式（字典误报）
+    - stock        # 金融语境常用词；Stock 虽为罕见姓氏，本业务按词处理（字典误报）
+    - or           # 逻辑词（字典误报「OR」）；Or 为罕见姓与 S2 全大写单姓宽免碰撞，按词处理
+    - sow          # Statement of Work 缩写（字典误报「SOW」）；Sow 为西非姓氏与宽免碰撞，按词处理
+
+  # ── "*"：占位符类型名本身（overlay，生产 2026-11-03）──
+  # 占位符碎片（如全角 ［［PERSON_1］］）里的类型名会被 NER 当成实体：look 的 [[PERSON_473]] 值就是 "PERSON"
+  # 与 app/schemas.py CANONICAL_KINDS + CUSTOM 保持一致（tests/test_precision.py 校验）
+  "*":
+    - person
+    - phone
+    - email
+    - id_card
+    - bank_card
+    - account
+    - crypto_addr
+    - org
+    - business_id
+    - address
+    - tin
+    - api_key
+    - dob
+    - url
+    - ip_address
+    - custom

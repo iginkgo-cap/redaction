@@ -1,0 +1,3 @@
+# 中文 NER（可选，LOOK-5231）。代码 Apache-2.0，但模型是 CC BY-NC-SA 4.0（非商用），对外版本不带。
+# 镜像构建传 --build-arg WITH_HANLP=1 才会安装；同时要 REDACTION_DETECTORS 含 hanlp、模型用 download_models.py --with-hanlp 下载。
+hanlp>=2.1.0

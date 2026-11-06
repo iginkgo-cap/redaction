@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+.git/
+.gitignore
+.python-version
+dist/
+*.log
+docs/
+tests/
+models/
+README.md
+docker-compose*.yml
+.dockerignore
+Dockerfile
+# file-masker 子目录（LOOK-6876）：服务镜像不需要前端、测试、构建产物与邮件模式的本机配置 / 数据
+file-masker/frontend/
+file-masker/tests/
+file-masker/dist/
+file-masker/data/
+file-masker/mail.toml*
+file-masker/mail.local.toml
+file-masker/.venv/

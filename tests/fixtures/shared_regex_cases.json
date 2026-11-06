@@ -1,0 +1,24 @@
+{
+  "_comment": "LOOK-6827 共享测试样例：redaction-service 与 Ginkgo-labs tenant/lib/redaction/local-regex.ts 跑同一份。服务端断言完整链路（cn_regex + en_regex → merge_spans → apply_context_rules），labs 断言 detectLocalSpans。labs_skip=true 表示 labs 本地正则有意不支持（允许差异），附 reason。修改本文件后须同步 labs 副本 tenant/lib/redaction/__fixtures__/shared-regex-cases.json（内容逐字一致）。",
+  "cases": [
+    {"id": "id_valid", "text": "身份证 11010119900101123X 已核验", "include": [["ID_CARD", "11010119900101123X"]], "exclude": []},
+    {"id": "id_bad_checksum", "text": "身份证 110101199001011235 已核验", "include": [["ID_CARD", "110101199001011235"]], "exclude": []},
+    {"id": "id_hk_macau_tw_permit", "text": "港澳台居民居住证 810000199001011234 已核验", "include": [["ID_CARD", "810000199001011234"]], "exclude": []},
+    {"id": "id_zero_prefix", "text": "单号 012345678901234567 已处理", "include": [], "exclude": [["ID_CARD", "012345678901234567"]]},
+    {"id": "id_bad_date", "text": "编号 110101199013401234 已归档", "include": [], "exclude": [["ID_CARD", "110101199013401234"]]},
+    {"id": "url_public", "text": "参考 https://github.com/foo/bar 的实现", "include": [], "exclude": [["URL", "https://github.com/foo/bar"]]},
+    {"id": "url_credential", "text": "下载 https://a.example.com/f?token=abc123 即可", "include": [["URL", "https://a.example.com/f?token=abc123"]], "exclude": []},
+    {"id": "url_internal", "text": "内网 http://10.0.16.73:3000/api 可用", "include": [["URL", "http://10.0.16.73:3000/api"]], "exclude": []},
+    {"id": "dob_birth", "text": "客户出生日期 1990年3月5日，已核验", "include": [["DOB", "1990年3月5日"]], "exclude": []},
+    {"id": "dob_contract", "text": "合同到期日 2027年12月31日，请续签", "include": [], "exclude": [["DOB", "2027年12月31日"]]},
+    {"id": "bic_beneficiary", "text": "Beneficiary bank code: CITIUS33 for the wire", "include": [["BANK_CARD", "CITIUS33"]], "exclude": []},
+    {"id": "bic_plain_word", "text": "ATTESTATION letter attached", "include": [], "exclude": [["BANK_CARD", "ATTESTATION"]]},
+    {"id": "passport_cn", "text": "护照号 EJ8932745 已登记", "include": [["ID_CARD", "EJ8932745"]], "exclude": []},
+    {"id": "passport_sg", "text": "Passport K1234567X on file", "include": [["ID_CARD", "K1234567X"]], "exclude": []},
+    {"id": "phone_grouped", "text": "手机：138 0176 5924　备用：139-1728-4410（配偶）", "include": [["PHONE", "138 0176 5924"], ["PHONE", "139-1728-4410"]], "exclude": []},
+    {"id": "landline_grouped", "text": "运营中心 直拨 021-6888 7102", "include": [["PHONE", "021-6888 7102"]], "exclude": []},
+    {"id": "landline_paren_ext", "text": "总机（0755）2688-1234 转 801", "include": [["PHONE", "（0755）2688-1234 转 801"]], "exclude": []},
+    {"id": "landline_not_date", "text": "编号 02168887102，日期 2026-11-05", "include": [], "exclude": [["PHONE", "02168887102"], ["PHONE", "2026-11-05"]]},
+    {"id": "card_grouped_luhn_valid", "text": "招商银行 6225 8801 2345 6783（户名", "include": [["BANK_CARD", "6225 8801 2345 6783"]], "exclude": [["PHONE", "8801 2345 6783"]]}
+  ]
+}

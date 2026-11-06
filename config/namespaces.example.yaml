@@ -1,0 +1,29 @@
+# Namespaces and callers for the /v2 API.
+#
+# A namespace is the isolation unit: placeholders and their original values are stored per namespace,
+# and a caller may only use the namespaces listed for it. deploy/install.sh writes a ready-to-use copy
+# (one "default" namespace, an "app" caller and an "admin" caller) to <install dir>/namespaces.yaml.
+#
+# callers:
+#   token_sha256  SHA-256 (lowercase hex) of the caller's token. Only the hash is stored here; keep the
+#                 token itself somewhere safe. List several hashes to rotate tokens without downtime.
+#                 Generate a token and its hash:
+#                   T=$(head -c 32 /dev/urandom | base64 | tr '+/' '-_' | tr -d '='); echo "$T"
+#                   printf %s "$T" | sha256sum
+#   admin: true   may call POST /v2/namespaces/remove
+#
+# namespaces:
+#   id       sent in every request; never change or reuse it. Format [a-z0-9][a-z0-9_-]{0,49}
+#   slug     human-readable name used in logs, unique. Format [a-z0-9][a-z0-9-]{0,39}
+#   callers  callers allowed to use this namespace
+#
+# Restart the redaction container after editing: docker compose restart redaction
+
+callers:
+  app: { token_sha256: ["<sha256 of the app token>"] }
+  admin: { token_sha256: ["<sha256 of the admin token>"], admin: true }
+
+namespaces:
+  - id: default
+    slug: default
+    callers: [app, admin]

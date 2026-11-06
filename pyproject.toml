@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+  "slow: 需要加载真实 HanLP/NVIDIA 模型的测试（默认跳过，CI 全跑）",
+  "api: 端到端 API 测试（需要服务已在 :8001 启动）",
+]
+asyncio_mode = "auto"

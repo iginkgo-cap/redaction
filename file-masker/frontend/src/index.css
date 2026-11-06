@@ -1,0 +1,8143 @@
+:root {
+  color: #13211b;
+  background: #f3f0e7;
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+textarea,
+select,
+a {
+  font: inherit;
+}
+
+textarea {
+  width: 100%;
+  margin-top: 0.55rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  resize: vertical;
+}
+
+select {
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+}
+
+button {
+  border: 0;
+  border-radius: 999px;
+  background: #143b2f;
+  color: #f5f6f2;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition:
+    box-shadow 160ms ease,
+    opacity 160ms ease,
+    background 160ms ease;
+}
+
+/* Hover elevation is opt-in for FILLED buttons only (LOOK-5932). Flat/embedded controls
+   (restyled background/border) hover with their own tint — a blanket button:hover shadow leaked
+   a pill shadow under every one of them. Unclassed buttons ARE the filled dark pill (the base
+   `button` style), so they keep the shadow via :not([class]); classed filled buttons are
+   enumerated. Add new filled button classes here. */
+button:not([class]):hover:not(:disabled),
+button.secondary:hover:not(:disabled),
+.pdf-forms-cta:hover:not(:disabled),
+.login-btn:hover:not(:disabled),
+.template-edit-actions .confirm-btn:hover:not(:disabled),
+.pdf-autoparse-apply:hover:not(:disabled),
+.pdf-forms-move-new-add:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(20, 59, 47, 0.35);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+button.secondary {
+  background: #c46c3c;
+}
+
+.split-btn-group {
+  display: inline-flex;
+}
+
+.split-btn-group .split-btn-main {
+  border-radius: 6px 0 0 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.split-btn-group .split-btn-arrow {
+  background: #0f2c22;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  padding: 0 0.55rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: white;
+  line-height: 1;
+  min-width: 1.8rem;
+}
+
+.split-btn-arrow:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(15, 44, 34, 0.45);
+}
+
+.split-btn-arrow:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Appearance only — AnchoredPanel owns position/left/top/right/max-height. */
+.split-btn-menu {
+  background: #1a3527;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  min-width: 200px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.split-btn-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transform: none;
+}
+
+.split-btn-menu button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  transform: none;
+  box-shadow: none; /* flat menu items — no pill elevation inside the dropdown */
+}
+
+input[type="file"] {
+  width: 100%;
+  margin-top: 0.55rem;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* The second grid row hosts the feature page. Its child (Suspense's
+ * fallback or the actual <Outlet/> render) gets the 1fr slot and is
+ * expected to handle its own internal scrolling. */
+.app-outlet {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* `.mode-tabs` / `.mode-tab` are QuickForm's section nav and nothing else's — see the
+ * "QuickForm form sets + workspaces" section near the end of this file for the rules. */
+
+.sign-status {
+  margin-top: 0.25rem;
+}
+
+.status.success {
+  color: #2d6a3f;
+}
+
+.status.info {
+  color: #205878;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #8b4b2f;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.panel h2 {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+}
+
+.ctc-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.ctc-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 420px minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.form-panel {
+  padding: 1rem;
+  overflow: visible;
+  z-index: 2;
+  position: relative;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  border-right: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  border-radius: 0;
+}
+
+.preview-panel > .preview-file-header {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.7);
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.panel-header p {
+  margin: 0.35rem 0 0;
+  color: rgba(19, 33, 27, 0.72);
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(20, 59, 47, 0.08);
+  color: rgba(19, 33, 27, 0.55);
+  cursor: pointer;
+}
+
+.header-icon-btn:hover:not(:disabled) {
+  background: rgba(20, 59, 47, 0.15);
+  color: #13211b;
+  transform: none;
+}
+
+.field {
+  display: block;
+  margin-top: 1.25rem;
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clear-all-btn {
+  padding: 0.15rem 0.5rem;
+  border: none;
+  background: none;
+  color: rgba(19, 33, 27, 0.55);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.clear-all-btn:hover {
+  color: #b42828;
+}
+
+.field span {
+  display: inline-block;
+  font-weight: 600;
+}
+
+.insert-date-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(20, 59, 47, 0.08);
+  color: rgba(19, 33, 27, 0.65);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.insert-date-btn:hover:not(:disabled) {
+  background: rgba(20, 59, 47, 0.15);
+  color: #13211b;
+  transform: none;
+}
+
+.field small {
+  display: block;
+  margin-top: 0.45rem;
+  color: rgba(19, 33, 27, 0.65);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.status-block {
+  min-height: 4.5rem;
+  margin-top: 1rem;
+}
+
+.status {
+  margin: 0;
+  border-radius: 18px;
+  padding: 0.85rem 1rem;
+  background: rgba(20, 59, 47, 0.08);
+}
+
+.status.success {
+  background: rgba(20, 59, 47, 0.12);
+}
+
+.status.error {
+  background: rgba(196, 108, 60, 0.15);
+  color: #7e3512;
+}
+
+.download-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  color: #143b2f;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+.preview-placeholder {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  text-align: center;
+  color: rgba(19, 33, 27, 0.68);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+/* Inline spinner used inside buttons + small status spans. See
+ * src/components/Spinner.tsx for usage.
+ *
+ * Designed to slot into existing text without changing the line-box
+ * height: the spinner is a tiny inline-block, slightly under 1em so it
+ * fits within the surrounding text's ascent/descent, and is aligned to
+ * the text's vertical middle. A small right margin gives the gap to the
+ * label that follows. */
+
+.spinner-inline {
+  display: inline-block;
+  vertical-align: -0.15em;
+  margin-right: 0.4em;
+  line-height: 0;
+}
+
+.spinner-inline svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: spinner-inline-rotate 0.85s linear infinite;
+}
+
+@keyframes spinner-inline-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(19, 33, 27, 0.15);
+  border-top-color: rgba(19, 33, 27, 0.55);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.feature-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.preview-placeholder p {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.preview-placeholder span {
+  display: block;
+  margin-top: 0.45rem;
+}
+
+.template-section {
+  margin-top: 0.5rem;
+}
+
+.template-section-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.5);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.template-trigger-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.template-trigger-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.6);
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.template-trigger-btn:hover,
+.template-trigger-btn.open {
+  border-color: rgba(19, 33, 27, 0.4);
+}
+
+.template-active-name {
+  color: #143b2f;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.template-trigger-btn .chevron {
+  font-size: 0.65rem;
+  margin-left: 0.5rem;
+}
+
+.template-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  padding: 0;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  color: rgba(19, 33, 27, 0.6);
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.template-add-btn:hover:not(:disabled) {
+  background: rgba(20, 59, 47, 0.08);
+  color: #13211b;
+  transform: none;
+}
+
+/* Appearance only — AnchoredPanel owns position/left/top/width/max-height. */
+.template-dropdown {
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(27, 40, 34, 0.15);
+  z-index: 100;
+  overflow-y: auto;
+  padding: 0.35rem;
+}
+
+/* Lift the shadow the other way when the panel flipped above the trigger. */
+.template-dropdown[data-placement='top'] {
+  box-shadow: 0 -12px 40px rgba(27, 40, 34, 0.15);
+}
+
+.template-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.template-dropdown-item:hover {
+  background: rgba(20, 59, 47, 0.06);
+}
+
+.template-dropdown-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.template-dropdown-item-title {
+  font-weight: 600;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
+.template-dropdown-item-preview {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.5);
+  margin-top: 0.15rem;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.template-dropdown-item-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.15rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.template-dropdown-item:hover .template-dropdown-item-actions {
+  opacity: 1;
+}
+
+.template-action-btn {
+  padding: 0.2rem 0.4rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  font-size: 0.72rem;
+  color: rgba(19, 33, 27, 0.5);
+  cursor: pointer;
+}
+
+.template-action-btn:hover {
+  background: rgba(19, 33, 27, 0.08);
+  color: #13211b;
+  transform: none;
+}
+
+.template-action-btn.delete:hover {
+  color: #7e3512;
+  background: rgba(196, 108, 60, 0.1);
+}
+
+.template-dropdown-divider {
+  height: 1px;
+  background: rgba(19, 33, 27, 0.08);
+  margin: 0.25rem 0.4rem;
+}
+
+.template-dropdown-empty {
+  padding: 1rem;
+  text-align: center;
+  color: rgba(19, 33, 27, 0.63);
+  font-size: 0.85rem;
+}
+
+.template-save-form {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.5rem 0.65rem;
+}
+
+.template-save-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.template-save-form .confirm-btn,
+.template-edit-actions .confirm-btn {
+  padding: 0.35rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: #143b2f;
+  color: #fff;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.template-save-form .cancel-btn,
+.template-edit-actions .cancel-btn {
+  padding: 0.35rem 0.6rem;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(19, 33, 27, 0.08);
+  color: #13211b;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.template-edit-form {
+  padding: 0.5rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.template-edit-form input {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.template-edit-form textarea {
+  margin-top: 0;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.82rem;
+  resize: vertical;
+}
+
+.template-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.template-field-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.template-field-required {
+  color: #c0392b;
+}
+
+.template-edit-form input[aria-invalid='true'],
+.template-edit-form textarea[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.template-field-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #c0392b;
+}
+
+.template-edit-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.template-confirm-delete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(196, 108, 60, 0.08);
+  font-size: 0.85rem;
+  color: #7e3512;
+}
+
+.template-confirm-delete-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.template-confirm-delete-actions .confirm-btn {
+  background: #7e3512;
+}
+
+.template-confirm-delete span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* File list */
+
+.file-list {
+  margin-top: 0.55rem;
+}
+
+.file-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.file-list-item:hover {
+  background: rgba(20, 59, 47, 0.05);
+}
+
+.file-list-item.selected {
+  background: rgba(20, 59, 47, 0.1);
+}
+
+.file-list-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  /* Also used as a <button> (keyboard-select, LOOK-5932) — neutralize the UA button chrome. */
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.file-list-item-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-list-item-size {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.5);
+}
+
+.file-list-item-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.15rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.file-list-item:hover .file-list-item-actions {
+  opacity: 1;
+}
+
+.file-list-remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: rgba(19, 33, 27, 0.5);
+  cursor: pointer;
+}
+
+.file-list-remove-btn:hover {
+  background: rgba(196, 108, 60, 0.12);
+  color: #7e3512;
+  transform: none;
+}
+
+.file-list.drag-over {
+  outline: 2px dashed #205878;
+  outline-offset: -2px;
+  border-radius: 10px;
+  background: rgba(32, 88, 120, 0.04);
+}
+
+.file-list-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  border: 1.5px dashed rgba(19, 33, 27, 0.2);
+  border-radius: 10px;
+  background: none;
+  color: rgba(19, 33, 27, 0.55);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.file-list-add-btn:hover {
+  border-color: rgba(19, 33, 27, 0.4);
+  color: #13211b;
+  background: rgba(20, 59, 47, 0.04);
+  transform: none;
+}
+
+/* Preview file header */
+
+.preview-file-header {
+  padding: 0.45rem 0.75rem;
+  margin-bottom: 0.25rem;
+  background: rgba(20, 59, 47, 0.06);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(19, 33, 27, 0.65);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Download progress bar */
+
+.download-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 160px;
+}
+
+.download-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(19, 33, 27, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.download-progress-fill {
+  height: 100%;
+  background: #c46c3c;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.download-progress-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.6);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(19, 33, 27, 0.12);
+  padding: 2.5rem 2.25rem;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+.login-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.4rem;
+  color: #143b2f;
+}
+
+.login-subtitle {
+  margin: 0 0 1.5rem;
+  color: rgba(19, 33, 27, 0.65);
+  font-size: 0.95rem;
+}
+
+.login-error {
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(196, 66, 66, 0.08);
+  color: #a33030;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  background: #143b2f;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+  z-index: 10;
+}
+
+.app-header-title {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #143b2f;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.app-header-title-sep {
+  opacity: 0.4;
+  font-weight: 400;
+}
+
+.app-header-title-feature {
+  font-weight: 500;
+  opacity: 0.75;
+}
+
+.app-header-title-link {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.15rem 0.35rem;
+  margin: 0 -0.35rem;
+  border-radius: 6px;
+  transition: background 120ms ease;
+}
+
+.app-header-title-link:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.app-header-title-sub {
+  color: rgba(19, 33, 27, 0.7);
+  font-weight: 500;
+  padding: 0.15rem 0.35rem;
+}
+
+/* Home / feature launcher */
+
+.home {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.5rem 6rem;
+  box-sizing: border-box;
+}
+
+/* max-width + the grid's `width: 100%` are what make the tile grid respect the viewport.
+   Without them `.home-inner` is a content-sized flex item, so the grid is measured at
+   max-content, `auto-fit` never sees a constrained container, and the tiles bleed off both
+   edges on a phone (860px wide in a 375px viewport before this). */
+.home-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.5rem;
+  max-width: 100%;
+}
+
+.home-welcome {
+  text-align: center;
+}
+
+.home-welcome-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #143b2f;
+  letter-spacing: -0.01em;
+}
+
+.home-welcome-subtitle {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+/* The column count comes from `--home-cols` (Home.tsx's `tileColumns`, which balances the last
+   row) — but applied as a *width*, not as an explicit `repeat(N, …)`. `auto-fit` then lands on
+   that many columns when there's room and fewer when there isn't, so the narrow-screen collapse
+   keeps working without a media query. Fallback 3 = the old 1100px cap's effective count. */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 260px);
+  justify-content: center;
+  gap: 2.5rem;
+  width: 100%;
+  max-width: calc(var(--home-cols, 3) * 260px + (var(--home-cols, 3) - 1) * 2.5rem);
+}
+
+.home-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 2.25rem 1.5rem 1.75rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(19, 33, 27, 0.08);
+  box-shadow: 0 1px 2px rgba(19, 33, 27, 0.04);
+  transition: box-shadow 160ms ease, background 160ms ease;
+}
+
+.home-tile:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 12px 28px rgba(19, 33, 27, 0.1);
+}
+
+.home-tile-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #2c7a5b 0%, #143b2f 100%);
+  color: #f5f6f2;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 6px 16px rgba(20, 59, 47, 0.25);
+}
+
+.home-tile-icon {
+  display: block;
+}
+
+.home-tile-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #143b2f;
+  margin-bottom: 0.2rem;
+}
+
+.home-tile-desc {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.65);
+  line-height: 1.35;
+}
+
+
+.app-header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #143b2f;
+  font-size: 0.9rem;
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.app-header-user:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.app-header-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #143b2f;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Appearance only — AnchoredPanel owns position/right/top/max-height. */
+.app-header-menu {
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(19, 33, 27, 0.1);
+  padding: 0.25rem;
+  /* The primitive hands every panel a max-height; without this the content just draws past it. */
+  overflow-y: auto;
+  z-index: 11;
+}
+
+.app-header-menu-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: #143b2f;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.app-header-menu-item:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+/* ---------- QuickForm ---------- */
+
+.pdf-forms-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-forms-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.pdf-forms-page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #143b2f;
+  font-weight: 600;
+}
+
+.pdf-forms-cta {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.pdf-forms-skeleton {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.pdf-forms-skeleton-row {
+  height: 56px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(19, 33, 27, 0.04) 0%,
+    rgba(19, 33, 27, 0.08) 50%,
+    rgba(19, 33, 27, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: pdf-forms-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes pdf-forms-shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: -200% 0%;
+  }
+}
+
+.pdf-forms-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: rgba(220, 80, 60, 0.08);
+  color: #8a2a1b;
+  border: 1px solid rgba(220, 80, 60, 0.2);
+  font-size: 0.9rem;
+}
+
+.pdf-forms-error-retry {
+  background: transparent;
+  color: #8a2a1b;
+  border: 1px solid rgba(138, 42, 27, 0.3);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.pdf-forms-error-retry:hover:not(:disabled) {
+  background: rgba(138, 42, 27, 0.08);
+}
+
+.pdf-forms-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px dashed rgba(19, 33, 27, 0.15);
+  color: #143b2f;
+}
+
+.pdf-forms-empty-icon {
+  width: 64px;
+  height: 64px;
+  color: #143b2f;
+}
+
+.pdf-forms-empty-title {
+  margin: 1rem 0 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.pdf-forms-empty-hint {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.7);
+  max-width: 32rem;
+}
+
+.pdf-forms-table-wrap {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(19, 33, 27, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.pdf-forms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.pdf-forms-table thead th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(19, 33, 27, 0.55);
+  padding: 0.75rem 1rem;
+  background: rgba(19, 33, 27, 0.03);
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-forms-table tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.06);
+  vertical-align: middle;
+}
+
+.pdf-forms-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pdf-forms-row {
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.pdf-forms-row:hover {
+  background: rgba(19, 33, 27, 0.04);
+}
+
+.pdf-forms-cell-name {
+  font-weight: 500;
+  color: #143b2f;
+}
+
+.pdf-forms-col-num {
+  text-align: right;
+  width: 4rem;
+}
+
+.pdf-forms-col-actions {
+  width: 3rem;
+}
+
+/* Dialog — new template */
+
+.pdf-forms-dialog {
+  border: 0;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 24px 60px rgba(27, 40, 34, 0.25);
+  max-width: 560px;
+  width: 90vw;
+  color: #13211b;
+}
+
+.pdf-forms-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.pdf-forms-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-forms-dialog-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.pdf-forms-dialog-close {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: rgba(19, 33, 27, 0.55);
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+}
+
+.pdf-forms-dialog-close:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+  color: #143b2f;
+}
+
+.pdf-forms-dialog-body {
+  padding: 1.25rem;
+}
+
+.pdf-forms-dialog-hint {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-forms-dialog-intro {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: rgba(19, 33, 27, 0.8);
+}
+
+.pdf-forms-check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pdf-forms-check-row input {
+  cursor: pointer;
+}
+
+.pdf-forms-advanced {
+  margin-top: 0.85rem;
+}
+
+.pdf-forms-advanced .pdf-forms-dialog-hint {
+  margin-bottom: 0;
+}
+
+.pdf-forms-dialog-status {
+  margin: 0.85rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-forms-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pdf-forms-dialog-file-meta {
+  padding: 0.5rem 0.85rem;
+  background: rgba(19, 33, 27, 0.04);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.pdf-forms-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Select + Clear on one line. The stacked-field rule below sets `width: 100%` on the select, so
+   it has to flex here instead or the button gets pushed out of the dialog. */
+.pdf-forms-field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-forms-field-row select {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Only rendered while a set is chosen, so it never sits next to an empty field. Tinted hover, not
+   a shadow: it is embedded in a form row, not free-standing. */
+.pdf-forms-field-clear {
+  flex-shrink: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.75);
+  cursor: pointer;
+}
+
+.pdf-forms-field-clear:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.04);
+}
+
+.pdf-forms-field-clear:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.pdf-forms-field-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+/* `select` joins these so a dropdown field matches the text fields beside it — the global select
+   rule is a flex-child style (flex:1) meant for inline rows, not a stacked form field. */
+.pdf-forms-field input,
+.pdf-forms-field select,
+.pdf-forms-field textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.pdf-forms-field input:focus,
+.pdf-forms-field select:focus,
+.pdf-forms-field textarea:focus {
+  outline: 2px solid rgba(20, 59, 47, 0.35);
+  outline-offset: -1px;
+}
+
+.pdf-forms-field textarea {
+  resize: vertical;
+  margin: 0;
+}
+
+.pdf-forms-field-required {
+  color: #c0392b;
+}
+
+.pdf-forms-field input[aria-invalid='true'],
+.pdf-forms-field select[aria-invalid='true'],
+.pdf-forms-field textarea[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.pdf-forms-field-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #c0392b;
+}
+
+.pdf-forms-dialog-error {
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(220, 80, 60, 0.08);
+  border: 1px solid rgba(220, 80, 60, 0.2);
+  border-radius: 8px;
+  color: #8a2a1b;
+  font-size: 0.85rem;
+}
+
+/* Amber caution used by the Replace-PDF orphaned-fields warning (LOOK-5926). */
+.pdf-forms-dialog-warning {
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(214, 158, 46, 0.1);
+  border: 1px solid rgba(214, 158, 46, 0.3);
+  border-radius: 8px;
+  color: #8a5a00;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.pdf-forms-dialog-charcount {
+  margin-top: 0.25rem;
+  text-align: right;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.pdf-forms-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid rgba(19, 33, 27, 0.08);
+  background: rgba(19, 33, 27, 0.02);
+}
+
+.pdf-forms-dialog-cancel {
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  padding: 0.5rem 1rem;
+}
+
+.pdf-forms-dialog-cancel:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+/* Destructive secondary action: sits at the far left of the footer, away from the primary CTA,
+   and stays outlined so it never competes with it for the eye. */
+.pdf-forms-dialog-danger {
+  margin-right: auto;
+  background: transparent;
+  color: #8a2a1b;
+  border: 1px solid rgba(138, 42, 27, 0.35);
+  padding: 0.5rem 1rem;
+}
+
+.pdf-forms-dialog-danger:hover:not(:disabled) {
+  background: rgba(138, 42, 27, 0.08);
+  border-color: #8a2a1b;
+}
+
+/* Row actions — kebab + inline confirm */
+
+
+.pdf-forms-kebab {
+  background: transparent;
+  border: none;
+  color: rgba(19, 33, 27, 0.55);
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.pdf-forms-kebab:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+  color: #143b2f;
+}
+
+/* Appearance only — AnchoredPanel owns position/right/top/max-height. */
+.pdf-forms-kebab-menu {
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(19, 33, 27, 0.12);
+  padding: 0.25rem;
+  /* The primitive hands every panel a max-height; without this the content just draws past it.
+     Load-bearing once the move-to-group submenu lists more groups than fit. */
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.pdf-forms-kebab-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: #143b2f;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pdf-forms-kebab-item:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-forms-kebab-item-danger {
+  color: #8a2a1b;
+}
+
+.pdf-forms-kebab-item-danger:hover {
+  background: rgba(220, 80, 60, 0.1);
+}
+
+.pdf-forms-confirm-btn {
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+
+.pdf-forms-confirm-btn:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-forms-confirm-btn-danger {
+  background: #8a2a1b;
+  color: #fff;
+  border-color: #8a2a1b;
+}
+
+.pdf-forms-confirm-btn-danger:hover:not(:disabled) {
+  background: #6f1f12;
+  color: #fff;
+}
+
+.pdf-forms-deleting {
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.55);
+  font-style: italic;
+}
+
+/* Toast */
+
+.pdf-forms-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #143b2f;
+  color: #f5f6f2;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  box-shadow: 0 6px 18px rgba(19, 33, 27, 0.2);
+  z-index: 20;
+  max-width: 90vw;
+}
+
+/* Designer page */
+
+.pdf-designer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.pdf-designer-loading,
+.pdf-designer-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 50vh;
+}
+
+.pdf-designer-error {
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.pdf-designer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-designer-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.pdf-designer-name {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.pdf-designer-desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-designer-desc-empty {
+  color: rgba(19, 33, 27, 0.35);
+  font-style: italic;
+}
+
+.pdf-designer-editable {
+  cursor: text;
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+  margin-left: -0.35rem;
+  transition: background 120ms ease;
+}
+
+.pdf-designer-editable:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-designer-name-input {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #143b2f;
+  padding: 0.1rem 0.35rem;
+  margin-left: -0.35rem;
+  width: 100%;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.pdf-designer-desc-input {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.85);
+  resize: vertical;
+}
+
+.pdf-designer-saving {
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.55);
+  font-style: italic;
+  margin-top: 0.4rem;
+}
+
+/* Reference key (external template key, LOOK-5886) */
+
+.pdf-designer-refkey {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-designer-refkey-label {
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.pdf-designer-refkey-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  background: rgba(19, 33, 27, 0.06);
+  padding: 0.05rem 0.35rem;
+  border-radius: 5px;
+  color: #143b2f;
+}
+
+.pdf-designer-refkey-empty {
+  color: rgba(19, 33, 27, 0.35);
+  font-style: italic;
+}
+
+.pdf-designer-refkey-edit {
+  margin-top: 0.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pdf-designer-refkey-input {
+  width: 100%;
+  max-width: 22rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  background: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: #143b2f;
+}
+
+.pdf-designer-refkey-input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.pdf-designer-refkey-error {
+  font-size: 0.75rem;
+  color: #c0392b;
+}
+
+/* Toolbar */
+
+.pdf-designer-toolbar {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+  width: 100%;
+}
+
+.pdf-designer-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.pdf-designer-tool-icon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.pdf-designer-tool-active .pdf-designer-tool-icon {
+  opacity: 1;
+}
+
+.pdf-designer-tool:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-designer-tool-active,
+.pdf-designer-tool-active:hover:not(:disabled) {
+  background: #143b2f;
+  color: #f5f6f2;
+  border-color: #143b2f;
+}
+
+/* AutoParse button states (tech-design-5608 §7.2): toolbar-sized filled pills.
+   Apply = global secondary orange; failed/timed-out = danger red with
+   hover-swapped "Retry AutoParse" label. */
+.pdf-autoparse-apply,
+.pdf-autoparse-failed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  color: #f5f6f2;
+}
+
+.pdf-autoparse-apply {
+  background: #c46c3c;
+}
+
+.pdf-autoparse-failed {
+  background: #c0392b;
+}
+
+.pdf-autoparse-failed .pdf-autoparse-retry-label {
+  display: none;
+}
+
+.pdf-autoparse-failed:hover .pdf-autoparse-failed-label {
+  display: none;
+}
+
+.pdf-autoparse-failed:hover .pdf-autoparse-retry-label {
+  display: inline;
+}
+
+/* AutoParse review stays in the toolbar flow; no overlay obscures the document. */
+.pdf-autoparse-quality {
+  color: #67551c;
+  font-size: 12px;
+}
+.pdf-autoparse-quality summary { cursor: pointer; }
+.pdf-autoparse-quality[open] { flex-basis: 100%; order: 1; }
+.pdf-autoparse-quality ul { max-height: 180px; overflow: auto; padding-left: 20px; }
+.pdf-autoparse-quality li { margin-block: 6px; overflow-wrap: anywhere; }
+
+.pdf-designer-toolbar:has(.pdf-autoparse-quality[open]) { flex-wrap: wrap; }
+
+.pdf-designer-toolbar-spacer {
+  flex: 1;
+  min-width: 1rem;
+}
+
+.pdf-selected-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.7rem 0.85rem;
+  background: rgba(19, 33, 27, 0.04);
+  border-radius: 8px;
+}
+
+.pdf-selected-key {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #143b2f;
+}
+
+.pdf-selected-meta {
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+/* Try-filling preview panel under the field details. */
+.pdf-field-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(19, 33, 27, 0.1);
+}
+.pdf-field-preview-header {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.65);
+}
+.pdf-field-preview-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.pdf-field-preview-input input[type="text"],
+.pdf-field-preview-input input[type="number"],
+.pdf-field-preview-input input[type="date"],
+.pdf-field-preview-input textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 4px;
+}
+.pdf-field-preview-input .pdf-filler-form-textarea {
+  resize: vertical;
+}
+
+.pdf-selected-geo {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.pdf-selected-option-descs {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-selected-option-value {
+  font-weight: 500;
+  color: #143b2f;
+}
+
+.pdf-designer-group-banner {
+  background: rgba(196, 108, 60, 0.12);
+  border: 1px solid rgba(196, 108, 60, 0.35);
+  color: #7e3512;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.pdf-group-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pdf-group-options-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.55);
+  font-style: italic;
+  padding: 0.3rem 0;
+}
+
+.pdf-group-options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pdf-group-option-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.pdf-group-option-inputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.pdf-group-option-desc {
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.pdf-group-option-tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(19, 33, 27, 0.08);
+  color: rgba(19, 33, 27, 0.7);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pdf-group-option-input {
+  flex: 1;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.85rem;
+  background: #fff;
+}
+
+.pdf-group-option-input-error {
+  border-color: rgba(220, 80, 60, 0.55);
+  background: rgba(220, 80, 60, 0.05);
+}
+
+.pdf-group-option-remove {
+  background: transparent;
+  color: rgba(19, 33, 27, 0.55);
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.pdf-group-option-remove:hover:not(:disabled) {
+  background: rgba(220, 80, 60, 0.08);
+  color: #8a2a1b;
+  border-color: rgba(220, 80, 60, 0.3);
+}
+
+/* Filler page */
+
+.pdf-filler {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.pdf-filler-loading,
+.pdf-filler-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 50vh;
+  padding: 1rem;
+}
+
+.pdf-filler-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-filler-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pdf-filler-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-filler-name {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.pdf-filler-desc {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.pdf-filler-grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+/* 三列布局（LOOK-6073）。助手不再是浮层，而是网格的第三列 —— 它把内容挤到左边，不是盖住。
+   上面的基础规则**保持两列不动**：单表 filler（FillerPage.tsx:1059）用的是不带该属性的同一个类，
+   改基础规则会把那个页面一起改掉。
+
+   预览列的 min 取 0 而不是 440：440 是「够不够展开两个面板」的判定输入（见 panelLayout.ts），
+   不是布局约束。写成 minmax(440px, 1fr) 会在窄宽度下让三条轨道之和超过容器，网格溢出、助手被裁。 */
+.pdf-filler-grid[data-panels='fields+assistant'] {
+  grid-template-columns: 420px minmax(0, 1fr) minmax(280px, 420px);
+}
+
+.pdf-filler-grid[data-panels='fields'] {
+  grid-template-columns: 420px minmax(0, 1fr);
+}
+
+.pdf-filler-grid[data-panels='assistant'] {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+}
+
+.pdf-filler-grid[data-panels='none'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* 收起字段列用 display:none 而不是不渲染：滚动位置留得住，而 display:none 的孩子不占网格轨道，
+   所以列定义与孩子数量始终对得上。
+   只挑 -fields：加载中与「PDF 加载失败」两个分支也叫 .pdf-filler-form-panel，它们是那个状态下
+   页面唯一的内容，一起藏掉会把报错也藏掉。 */
+.pdf-filler-grid[data-panels='assistant'] .pdf-filler-form-panel-fields,
+.pdf-filler-grid[data-panels='none'] .pdf-filler-form-panel-fields {
+  display: none;
+}
+
+.pdf-filler-form-panel {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(19, 33, 27, 0.08);
+  border-radius: 0;
+  padding: 0.85rem;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.pdf-filler-form-empty {
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.55);
+  margin: 0;
+}
+
+/* Two-section left panel (LOOK-5744): fixed optional header + scrollable field list. */
+.pdf-filler-form-panel-fields {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* the fields section is the sole scroller, not the whole panel */
+  padding: 0;
+}
+
+/* Section (a): fixed, non-scrolling — holds the assistant's read-only banner (LOOK-6073). */
+.pdf-filler-fwf {
+  flex: none;
+  padding: 0.85rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+/* Section (b): the scrollable field list. */
+.pdf-filler-fields-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.85rem;
+}
+
+.pdf-filler-form-toolbar-btn {
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  border-radius: 999px;
+}
+
+.pdf-filler-form-toolbar-btn:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-filler-form-toolbar-btn-danger {
+  color: #c0392b;
+  border-color: rgba(192, 57, 43, 0.4);
+}
+
+.pdf-filler-form-toolbar-btn-danger:hover:not(:disabled) {
+  background: rgba(192, 57, 43, 0.08);
+}
+
+.pdf-filler-excel-dropdown {
+  display: inline-block;
+}
+
+/* Appearance only — AnchoredPanel owns position/left/top/max-height. */
+.pdf-filler-excel-menu {
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.pdf-filler-excel-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: #143b2f;
+  padding: 0.55rem 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.pdf-filler-excel-menu button:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-filler-excel-menu button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pdf-filler-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pdf-filler-form-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pdf-filler-form-row {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: background 120ms ease, border-color 120ms ease;
+  cursor: pointer;
+}
+
+.pdf-filler-form-row:hover {
+  background: rgba(19, 33, 27, 0.03);
+}
+
+.pdf-filler-form-row-active {
+  background: rgba(20, 59, 47, 0.08);
+  border-color: rgba(20, 59, 47, 0.25);
+}
+
+.pdf-filler-form-row-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #143b2f;
+  margin-bottom: 0.3rem;
+}
+
+.pdf-filler-required {
+  color: #c46c3c;
+}
+
+.pdf-filler-form-row input[type='text'],
+.pdf-filler-form-row input[type='number'],
+.pdf-filler-form-row input[type='date'],
+.pdf-filler-form-textarea {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.9rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.pdf-filler-form-textarea {
+  margin: 0;
+  resize: vertical;
+  min-height: 2.2rem;
+  line-height: 1.4;
+}
+
+.pdf-filler-checkbox,
+.pdf-filler-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #143b2f;
+  cursor: pointer;
+}
+
+.pdf-filler-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Group options wrap long descriptions; pin the control to the first line (LOOK-6690). */
+.pdf-filler-option {
+  align-items: flex-start;
+}
+
+.pdf-filler-option > input {
+  margin-top: 0.2rem;
+}
+
+.pdf-filler-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.pdf-filler-option-value {
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.55);
+  overflow-wrap: anywhere;
+}
+
+.pdf-filler-radio-clear {
+  align-self: flex-start;
+  background: transparent;
+  color: rgba(19, 33, 27, 0.55);
+  border: none;
+  padding: 0.15rem 0.25rem;
+  font-size: 0.78rem;
+  text-decoration: underline;
+}
+
+.pdf-filler-radio-clear:hover {
+  color: #143b2f;
+}
+
+/* Filler overlay boxes */
+
+.pdf-filler-box {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: outline 120ms ease, filter 120ms ease;
+}
+
+.pdf-filler-box-active {
+  outline: 2px solid rgba(20, 59, 47, 0.7);
+  outline-offset: -1px;
+}
+
+.pdf-filler-box-filled {
+  /* No background fill — the rendered value sits directly on the PDF page
+     so the on-screen preview matches what the exported PDF will look like
+     (the rendered content layer paints text / marks, never a box fill). */
+  border: 1px solid rgba(58, 142, 96, 0.45);
+}
+
+
+
+
+.pdf-filler-box-missing-required {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(196, 108, 60, 0.32) 0 6px,
+    transparent 6px 12px
+  );
+  border: 1px solid rgba(196, 108, 60, 0.55);
+}
+
+.pdf-filler-box-missing-optional {
+  border: 1px dashed rgba(19, 33, 27, 0.45);
+  background: transparent;
+}
+
+.pdf-filler-box-group-checked {
+  /* No background fill (see .pdf-filler-box-filled). */
+  border: 1.5px solid rgba(58, 142, 96, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-filler-box-group-blank {
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  background: transparent;
+}
+
+/* Filler status bar */
+
+/* Inline form-fill status. Lives inside .pdf-filler-toolbar, centred,
+ * doesn't claim the full row width. Use margin:auto to stay centred even
+ * when the toolbar's siblings change width. */
+.pdf-filler-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin: 0 auto;
+}
+
+.pdf-filler-status-text {
+  font-size: 0.9rem;
+  color: #143b2f;
+  white-space: nowrap;
+}
+
+.pdf-filler-status-bar {
+  width: 140px;
+  flex-shrink: 0;
+  height: 6px;
+  background: rgba(19, 33, 27, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pdf-filler-status-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2e8b57, #143b2f);
+  transition: width 240ms ease;
+}
+
+.pdf-filler-status-chip {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+.pdf-filler-status-chip-missing {
+  background: rgba(196, 108, 60, 0.12);
+  color: #7e3512;
+  border-color: rgba(196, 108, 60, 0.4);
+  cursor: pointer;
+}
+
+.pdf-filler-status-chip-missing:hover:not(:disabled) {
+  background: rgba(196, 108, 60, 0.2);
+}
+
+.pdf-filler-status-chip-complete {
+  background: rgba(58, 142, 96, 0.12);
+  color: #1f6243;
+  border-color: rgba(58, 142, 96, 0.4);
+}
+
+.pdf-filler-status-chip-warn {
+  background: rgba(202, 138, 4, 0.12);
+  color: #854d0e;
+  border-color: rgba(202, 138, 4, 0.4);
+}
+
+/* Three-column grid */
+
+.pdf-designer-grid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+.pdf-designer-grid:has(.pdf-designer-sub-panel) {
+  grid-template-columns: 340px 340px 1fr;
+}
+
+.pdf-designer-list,
+.pdf-designer-sub-panel {
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(19, 33, 27, 0.08);
+  border-radius: 0;
+  padding: 0.85rem;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.pdf-designer-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.pdf-designer-list-header h2 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.pdf-designer-list-count {
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.55);
+  background: rgba(19, 33, 27, 0.06);
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+}
+
+.pdf-designer-list-empty {
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.55);
+  margin: 0.5rem 0 0;
+  line-height: 1.45;
+}
+
+.pdf-designer-list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pdf-designer-list-item button {
+  width: 100%;
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid transparent;
+  text-align: left;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.pdf-designer-list-item button:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-designer-list-item-active button,
+.pdf-designer-list-item-active button:hover {
+  background: rgba(20, 59, 47, 0.12);
+  border-color: rgba(20, 59, 47, 0.25);
+}
+
+.pdf-designer-list-item-key {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #143b2f;
+}
+
+.pdf-designer-list-item-meta {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+/* Shared document preview column. Used by:
+ *  - Designer's column 3
+ *  - Filler's column 2
+ *  - CTC PDF Helper's preview pane
+ * It owns the scroll, the dusty-cream background, and the
+ * horizontal centring of fixed-width pages. */
+.pdf-doc-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #e6e0cd;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* PdfCanvas component — pure container. display:contents so its pages become
+ * direct flex children of the surrounding .zoom-content (which owns the page
+ * column layout); .zoom-scroll owns the scroll + dusty-cream background. */
+.pdf-canvas-scroll {
+  display: contents;
+}
+
+.pdf-canvas-page {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(19, 33, 27, 0.15);
+  flex-shrink: 0;
+}
+
+.pdf-canvas-bitmap {
+  display: block;
+}
+
+/* Server-rendered filled values (LOOK-6375), painted over the template bitmap. Transparent, and
+   inert to the pointer so the interaction overlay above it still receives every event. */
+.pdf-canvas-content-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.pdf-canvas-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pdf-canvas-overlay > * {
+  pointer-events: auto;
+}
+
+.pdf-canvas-page-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(19, 33, 27, 0.72);
+  color: #f5f6f2;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+/* Box overlay */
+
+.pdf-box {
+  position: absolute;
+  border: 1.5px solid;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: filter 120ms ease, box-shadow 120ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pdf-box:hover {
+  filter: brightness(0.92);
+}
+
+.pdf-box-active {
+  box-shadow: 0 0 0 2px rgba(20, 59, 47, 0.6);
+}
+
+/* LOOK-5613 batch field operations */
+.pdf-box-multi {
+  outline: 2px dashed #2b6cb0;
+  outline-offset: 1px;
+}
+
+.pdf-batch-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0.1rem;
+}
+.pdf-batch-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+.pdf-batch-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.pdf-batch-group h4 {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+/* Matches .pdf-group-options-hint — the same "why this is unavailable" voice, not an error. */
+.pdf-batch-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.55);
+  font-style: italic;
+}
+.pdf-batch-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+/* Lightweight ghost buttons — calmer than the global dark-green pill so a
+ *  dense alignment toolbar doesn't read as a wall of buttons. */
+.pdf-batch-buttons button,
+.pdf-batch-panel-header button,
+.pdf-batch-delete {
+  background: #fff;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 8px;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+.pdf-batch-buttons button:hover:not(:disabled),
+.pdf-batch-panel-header button:hover:not(:disabled) {
+  transform: none;
+  background: rgba(20, 59, 47, 0.08);
+  border-color: rgba(20, 59, 47, 0.35);
+}
+.pdf-batch-panel-header button {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+}
+.pdf-batch-delete {
+  width: 100%;
+  color: #c0392b;
+  border-color: rgba(192, 57, 43, 0.4);
+}
+.pdf-batch-delete:hover:not(:disabled) {
+  transform: none;
+  background: rgba(192, 57, 43, 0.08);
+  border-color: rgba(192, 57, 43, 0.6);
+}
+
+@keyframes pdf-box-flash {
+  0% {
+    box-shadow: 0 0 0 6px rgba(20, 59, 47, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgba(20, 59, 47, 0.6);
+  }
+}
+
+.pdf-box-flash {
+  animation: pdf-box-flash 0.9s ease-out;
+}
+
+.pdf-box-label {
+  font-size: 0.7rem;
+  color: rgba(19, 33, 27, 0.85);
+  white-space: nowrap;
+  padding: 0 2px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.pdf-box-preview {
+  pointer-events: none;
+  border-style: dashed;
+  border-width: 2px;
+  border-color: #143b2f;
+  background: rgba(20, 59, 47, 0.1);
+}
+
+.pdf-box-preview-drag {
+  border-color: rgba(20, 59, 47, 0.65);
+  background: rgba(20, 59, 47, 0.06);
+}
+
+.pdf-box-preview-draft {
+  border-color: #c46c3c;
+  background: rgba(196, 108, 60, 0.15);
+}
+
+.pdf-box-preview-modifiable {
+  pointer-events: auto;
+  /* Initial cursor; pointer-move handler in BoxOverlay swaps it to the
+     appropriate resize/move cursor based on which border zone the pointer
+     is in (anywhere within ~6px of an edge → resize; interior → move). */
+  cursor: move;
+}
+
+/* Draft / Selected editor sub-panel */
+
+.pdf-draft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.pdf-draft-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.15rem;
+}
+
+.pdf-draft-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.pdf-draft-close {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: rgba(19, 33, 27, 0.55);
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+}
+
+.pdf-draft-close:hover {
+  background: rgba(19, 33, 27, 0.06);
+  color: #143b2f;
+}
+
+.pdf-draft-error {
+  color: #8a2a1b;
+  font-size: 0.78rem;
+}
+
+.pdf-draft-help {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.6);
+  /* Preserve consecutive spaces in the inline "Preview:" sample so the user
+     sees their custom date format exactly as it will render (pdf-lib doesn't
+     collapse whitespace). */
+  white-space: pre-wrap;
+}
+
+.pdf-draft-date-format-custom {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pdf-draft-date-format-custom input {
+  flex: 1;
+  min-width: 0;
+}
+
+.pdf-draft-date-format-presets {
+  flex-shrink: 0;
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+}
+
+.pdf-draft-date-format-presets:hover {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.pdf-draft-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #143b2f;
+}
+
+.pdf-draft-checkbox input {
+  margin: 0;
+}
+
+.pdf-draft-geometry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pdf-draft-geometry-grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 0.25rem 0.85rem;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.85);
+  padding: 0.45rem 0.7rem;
+  background: rgba(19, 33, 27, 0.04);
+  border-radius: 8px;
+}
+
+.pdf-draft-geometry-grid span {
+  color: rgba(19, 33, 27, 0.55);
+}
+
+/* Action-buttons section in the field-details panel, separated from the
+   preview section above by a divider + heading — mirrors .pdf-field-preview. */
+.pdf-draft-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(19, 33, 27, 0.1);
+}
+.pdf-draft-actions-header {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.65);
+}
+
+.pdf-draft-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.pdf-draft-footer-right {
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.pdf-draft-delete {
+  background: transparent;
+  color: #8a2a1b;
+  border: 1px solid rgba(138, 42, 27, 0.3);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.pdf-draft-delete:hover:not(:disabled) {
+  background: rgba(220, 80, 60, 0.08);
+}
+
+.pdf-canvas-error {
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(220, 80, 60, 0.08);
+  border: 1px solid rgba(220, 80, 60, 0.2);
+  color: #8a2a1b;
+  text-align: center;
+}
+
+/* QuickForm filler — fill-entry tab strip (LOOK-5612) */
+.pdf-filler-tabbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.pdf-filler-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 6px 6px 0;
+  flex: 1 1 auto;
+  min-width: 0; /* let the strip shrink + scroll instead of pushing actions off the row */
+  /* Allow horizontal scroll but hide the scrollbar — it otherwise overlays the bar. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.pdf-filler-tabs::-webkit-scrollbar {
+  display: none;
+}
+.pdf-filler-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  font-size: 13px;
+  color: #6b7280;
+  background: transparent;
+  flex: 0 0 auto;
+  position: relative;
+  bottom: -1px; /* overlap the strip's bottom border so the active tab connects to the form */
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+.pdf-filler-tab:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+.pdf-filler-tab-active,
+.pdf-filler-tab-active:hover {
+  background: #fff;
+  color: #111827;
+  border-color: #e5e7eb;
+  font-weight: 500;
+}
+.pdf-filler-tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+.pdf-filler-tab-dot-ok {
+  background: #16a34a;
+}
+.pdf-filler-tab-dot-warn {
+  background: #d97706;
+}
+.pdf-filler-tab-close {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #9ca3af;
+  line-height: 1;
+  padding: 0 2px;
+  font-size: 12px;
+}
+.pdf-filler-tab-close:hover {
+  color: #ef4444;
+}
+/* Rename (pencil) button — active tab only, left of the close ✕ (LOOK-5733). */
+.pdf-filler-tab-rename {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #9ca3af;
+  line-height: 0;
+  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
+}
+.pdf-filler-tab-rename:hover {
+  color: #143b2f;
+}
+/* QuickForm filler — shared "add a copy" button (LOOK-5733): icon + label,
+   swaps to spinner + "Preparing…" while a fill-session is being created. */
+.pdf-filler-add-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.pdf-filler-add-copy-icon {
+  flex: 0 0 auto;
+}
+/* Tab-bar clickable icons (LOOK-5733) — History and add-copy render as
+   borderless icon buttons that share this style. Text lives in the
+   title/aria-label, not on screen. */
+.pdf-filler-iconbtn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #6b7280;
+  flex: 0 0 auto;
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+.pdf-filler-iconbtn:hover:not(:disabled),
+.pdf-filler-iconbtn[aria-expanded='true'] {
+  background: #f3f4f6;
+  color: #143b2f;
+}
+.pdf-filler-iconbtn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+/* The inline Spinner is a flex item here; its default min-width:auto lets flex
+   shrink the wrapper span to 0 (the raw <svg> icons survive because they have
+   intrinsic size). Pin it so the "creating" spinner actually shows. */
+.pdf-filler-iconbtn .spinner-inline {
+  flex: 0 0 auto;
+  margin-right: 0;
+}
+.pdf-filler-tab-rename-input {
+  font: inherit;
+  font-size: 13px;
+  color: #111827;
+  border: 1px solid #93b5a6;
+  border-radius: 4px;
+  padding: 1px 6px;
+  min-width: 70px;
+  max-width: 160px;
+  outline: none;
+  background: #fff;
+}
+
+/* QuickForm filler — fill-session history (LOOK-5709) */
+.pdf-filler-history {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 0 3px 8px;
+}
+.pdf-filler-history-icon {
+  flex: 0 0 auto;
+}
+
+/* Appearance only — AnchoredPanel owns position/left/top/max-height. */
+.pdf-filler-history-panel {
+  z-index: 30;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(17, 24, 39, 0.14);
+  overflow: hidden;
+}
+.pdf-filler-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #f1f2f4;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+.pdf-filler-history-close {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #9ca3af;
+  line-height: 1;
+  padding: 0 2px;
+  font-size: 13px;
+}
+.pdf-filler-history-close:hover {
+  color: #374151;
+}
+.pdf-filler-history-body {
+  overflow-y: auto;
+  padding: 4px;
+}
+.pdf-filler-history-loading,
+.pdf-filler-history-empty {
+  padding: 20px 12px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+}
+.pdf-filler-history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pdf-filler-history-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.pdf-filler-history-item + .pdf-filler-history-item {
+  margin-top: 2px;
+}
+.pdf-filler-history-item-info {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  /* Also used as a <button> (keyboard-open, LOOK-5932) — neutralize the UA button chrome. */
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+}
+
+.pdf-filler-history-current {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(20, 59, 47, 0.1);
+  color: #143b2f;
+  font-size: 10px;
+  font-weight: 600;
+}
+/* Per-row rename (pencil) button (LOOK-5733) — sibling of the open-click area. */
+.pdf-filler-history-rename {
+  flex: 0 0 auto;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  transition:
+    background 0.12s ease,
+    color 0.12s ease;
+}
+.pdf-filler-history-rename:hover {
+  background: #f3f4f6;
+  color: #143b2f;
+}
+.pdf-filler-history-item-info:hover {
+  background: #f3f4f6;
+}
+.pdf-filler-history-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pdf-filler-history-date {
+  font-size: 11px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+/* The CTC session list and the signature-request list are full pages, not the compact popover
+   these styles were written for, so on a page they take the QuickForm template table's scale and
+   row rhythm (0.9rem name, 0.85rem/1rem padding). Scoped to .pdf-forms-page so the editor's
+   History dropdown and the QuickForm filler history stay tight. */
+.pdf-forms-page .pdf-filler-history-name {
+  font-size: 0.9rem;
+}
+
+.pdf-forms-page .pdf-filler-history-date {
+  font-size: 0.78rem;
+}
+
+.pdf-forms-page .pdf-filler-history-item-info {
+  padding: 0.85rem 1rem;
+}
+
+.pdf-forms-page .pdf-filler-history-empty,
+.pdf-forms-page .pdf-filler-history-loading {
+  font-size: 0.9rem;
+  padding: 0.85rem 1rem;
+}
+
+.pdf-filler-history-rename-input {
+  font: inherit;
+  font-size: 13px;
+  color: #111827;
+  border: 1px solid #93b5a6;
+  border-radius: 4px;
+  padding: 1px 6px;
+  width: 100%;
+  outline: none;
+  background: #fff;
+}
+
+/* QuickForm filler — sequential-import progress modal (LOOK-5612) */
+.pdf-filler-importing {
+  border: none;
+  border-radius: 8px;
+  padding: 20px 24px;
+  min-width: 280px;
+}
+.pdf-filler-importing::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+.pdf-filler-importing-bar {
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.pdf-filler-importing-fill {
+  height: 100%;
+  background: #2563eb;
+  transition: width 0.15s ease;
+}
+
+/* QuickForm filler — empty state (no entries) (LOOK-5612) */
+.pdf-filler-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 16px;
+  color: #6b7280;
+}
+
+/* Empty-state "session picker" fills the panel: a fixed create-fresh section
+   and a fixed "Recent fills" header, with only the list scrolling inside. */
+.pdf-filler-form-panel-picker {
+  overflow: hidden; /* the inner history list is the sole scroller, not the panel */
+}
+.pdf-filler-start {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 16px;
+  height: 100%;
+  min-height: 0;
+}
+.pdf-filler-start-head {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.pdf-filler-start-hint {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+}
+/* History as a native section of the picker — a labelled block, not a card.
+   Fills the remaining height; its header stays put while the list scrolls. */
+.pdf-filler-start-history {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid #f1f2f4;
+  padding-top: 14px;
+}
+.pdf-filler-start-section-label {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 2px;
+}
+.pdf-filler-start-history .pdf-filler-history-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ── Shared PDF preview zoom/pan engine (src/lib/zoom) — LOOK-5786 ─────
+ * .zoom-viewport : positioned host for the floating controls + scroll area
+ * .zoom-scroll   : the overflow:auto scroller (both axes)
+ * .zoom-sizer    : reserves the scaled footprint so scrollbars are honest;
+ *                  margin auto centres content narrower than the viewport
+ * .zoom-content  : the transformed page column (was .pdf-doc-preview flow) */
+.zoom-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.zoom-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #e6e0cd;
+}
+
+.zoom-sizer {
+  position: relative;
+  margin: 0 auto;
+}
+
+.zoom-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  transform-origin: top left;
+}
+
+/* Sits opposite the zoom controls so it never overlaps them. Deliberately quiet: it appears on
+   every debounced render, so anything louder would strobe while the user types (LOOK-6375). */
+.pdf-preview-pending {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: rgba(19, 33, 27, 0.62);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.zoom-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(19, 33, 27, 0.18);
+}
+
+.zoom-btn {
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: #13211b;
+  transition: box-shadow 0.15s;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px rgba(19, 33, 27, 0.2);
+}
+
+.zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.zoom-btn-text {
+  font-size: 12px;
+}
+
+.zoom-percent {
+  min-width: 44px;
+  text-align: center;
+  font-size: 12px;
+  color: #13211b;
+}
+
+/* Keep the preview area from collapsing when the layout stacks on narrow
+ * viewports (replaces the old .preview-stage mobile min-height). Must live
+ * after the base .zoom-viewport rule so it wins at equal specificity. */
+@media (max-width: 900px) {
+  .zoom-viewport {
+    min-height: 420px;
+  }
+}
+
+/* ============================================================
+ * QuickForm template grouping + search (LOOK-5928)
+ * ============================================================ */
+
+.pdf-forms-page-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.pdf-forms-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  padding: 0.5rem 0.85rem;
+  /* Matches .pdf-forms-cta. The two sit side by side (Forms list header, workspace toolbar), and an
+     unclassed button falls back to the 1rem body font — which is what made them look mismatched. */
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.pdf-forms-secondary:hover:not(:disabled) {
+  box-shadow: 0 2px 8px rgba(19, 33, 27, 0.12);
+}
+
+/* Search */
+
+.pdf-forms-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  color: rgba(19, 33, 27, 0.55);
+  flex-shrink: 0;
+}
+
+.pdf-forms-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.55rem 0;
+  font-size: 0.9rem;
+  color: #143b2f;
+}
+
+/* Accordion */
+
+.pdf-forms-accordion {
+  display: flex;
+  flex-direction: column;
+  /* One enclosed, rounded list (LOOK-5928): the accordion itself is the single rounded
+   * card. Its own scroll box (overflow-y:auto) clips content to these corners, so the
+   * sticky bars inside can no longer bleed rows through transparent rounded-corner notches.
+   * Sections stack seamlessly (no gap); a per-section top divider separates them.
+   * Also owns the vertical scroll inside the flex-column page so the list scrolls instead
+   * of overflowing the shell. */
+  gap: 0;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 10px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  /* Sticky offset for the group headers = the column-header row's height. Set at runtime
+   * from the measured height (TemplateListPage feeds it via inline style); this is only the
+   * pre-measure fallback. */
+  --gh-top: 40px;
+}
+
+/* Sticky column-header row (ID / Name / Pages / Last Updated) — a flat bar pinned at the top
+ * of the enclosed list while group headers stick just below it. Opaque so rows don't bleed
+ * through; the line beneath it is the first group's top divider. */
+.pdf-forms-col-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex-shrink: 0;
+  background: #fff;
+}
+
+.pdf-forms-group {
+  /* Flat section inside the enclosed list; a top divider separates it from the bar above
+   * (the first group's divider doubles as the line under the column header). No border-radius
+   * so the corners belong to the enclosing accordion, not the individual sections.
+   * Don't let the flex-column accordion shrink sections (which would clip their rows and
+   * defeat the accordion's own scroll). Each section keeps full height; the accordion
+   * overflows and scrolls.
+   * NOTE: intentionally NO `overflow: hidden` here — it would break the group header's
+   * position:sticky. */
+  border-top: 1px solid rgba(19, 33, 27, 0.1);
+  background: #fff;
+  flex-shrink: 0;
+}
+
+/* The group header sticks to the top of the scrolling accordion while its rows are in view,
+ * so you always see which group you're scrolling through (LOOK-5928). Needs an OPAQUE
+ * background so rows scrolling underneath don't bleed through. Square corners — the rounded
+ * corners live on the enclosing accordion. */
+.pdf-forms-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eef1ec;
+  position: sticky;
+  /* -1px so the bar tucks a hair under the column header (higher z-index, paints over it),
+   * killing any sub-pixel gap between the two stacked sticky bars. */
+  top: calc(var(--gh-top, 40px) - 1px);
+  z-index: 2;
+}
+
+.pdf-forms-group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  background: transparent;
+  border: none;
+  /* Fill the (square) header bar — override the global button pill radius so the hover
+   * tint below doesn't render as a rounded shape inside a square bar. */
+  border-radius: 0;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #143b2f;
+  cursor: pointer;
+  text-align: left;
+}
+
+/*
+ * Hover tints the WHOLE header bar, not just the toggle.
+ *
+ * The toggle is `flex: 1` over the chevron/name/count, so tinting it left any `headerActions`
+ * — the form-set list's date and kebab — untinted: hovering a form-set row lit up the name side
+ * and stopped. The Forms list passes no headerActions, so its toggle spans the bar and the bug was
+ * invisible there.
+ *
+ * Painted as a background-IMAGE layer so it composites over the bar's own `#eef1ec` exactly as the
+ * translucent toggle tint used to. A `background` shorthand here would replace that colour and
+ * composite over the section's white instead — hover would come out lighter, not darker.
+ */
+.pdf-forms-group-header:hover {
+  background-image: linear-gradient(rgba(19, 33, 27, 0.05) 0 100%);
+}
+
+/* Inert while a search forces the section open — no affordance, so no feedback. */
+.pdf-forms-group-header:has(.pdf-forms-group-toggle:disabled):hover {
+  background-image: none;
+}
+
+.pdf-forms-group-toggle:disabled {
+  cursor: default;
+}
+
+.pdf-forms-group-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(19, 33, 27, 0.55);
+  background: rgba(19, 33, 27, 0.06);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+
+.pdf-forms-group-body {
+  border-top: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-forms-table-grouped {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.pdf-forms-table-grouped .pdf-forms-col-id {
+  width: 64px;
+}
+.pdf-forms-table-grouped .pdf-forms-col-pages {
+  width: 72px;
+}
+.pdf-forms-table-grouped .pdf-forms-col-date {
+  width: 168px;
+}
+.pdf-forms-table-grouped .pdf-forms-col-kebab {
+  width: 52px;
+}
+
+.pdf-forms-group-empty td {
+  padding: 0.75rem 0.85rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.pdf-forms-empty-search {
+  color: rgba(19, 33, 27, 0.55);
+  font-size: 0.9rem;
+  padding: 1rem 0;
+}
+
+/* Icon buttons (reorder / rename / delete in the manager) */
+
+/* lucide SVGs are flex children whose min-width resolves to 0, so inside tight flex
+ * containers (icon buttons, menu items) they collapse to width:0 and vanish. Pin them. */
+.pdf-forms-iconbtn svg,
+.pdf-forms-kebab-item svg,
+.pdf-forms-secondary svg,
+.pdf-forms-search svg,
+.pdf-forms-group-toggle svg {
+  flex-shrink: 0;
+}
+
+.pdf-forms-iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(19, 33, 27, 0.65);
+  cursor: pointer;
+}
+
+.pdf-forms-iconbtn:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+  color: #143b2f;
+}
+
+.pdf-forms-iconbtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pdf-forms-iconbtn-danger:hover:not(:disabled) {
+  background: rgba(220, 80, 60, 0.12);
+  color: #8a2a1b;
+}
+
+/* Move-to-group submenu (second level of the row kebab) */
+
+.pdf-forms-move-submenu {
+  min-width: 190px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.pdf-forms-move-back {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: rgba(19, 33, 27, 0.6);
+  font-size: 0.8rem;
+}
+
+.pdf-forms-move-divider {
+  height: 1px;
+  background: rgba(19, 33, 27, 0.08);
+  margin: 0.25rem 0;
+}
+
+.pdf-forms-move-submenu .pdf-forms-kebab-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pdf-forms-move-check {
+  display: inline-flex;
+  width: 16px;
+  color: #2f7d5b;
+}
+
+.pdf-forms-move-new {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.pdf-forms-move-new-input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.8rem;
+}
+
+.pdf-forms-move-new-input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.pdf-forms-move-new .pdf-forms-field-error {
+  flex-basis: 100%;
+}
+
+.pdf-forms-move-new-add {
+  background: #143b2f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0 0.6rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.pdf-forms-move-new-add:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* Group manager dialog */
+
+.pdf-forms-group-manager-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pdf-forms-group-manager-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 8px;
+}
+
+.pdf-forms-group-manager-reorder {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.pdf-forms-group-manager-reorder .pdf-forms-iconbtn {
+  width: 22px;
+  height: 18px;
+}
+
+.pdf-forms-group-manager-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #143b2f;
+}
+
+.pdf-forms-group-manager-actions {
+  display: inline-flex;
+  gap: 0.2rem;
+}
+
+.pdf-forms-group-manager-edit,
+.pdf-forms-group-manager-new {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.pdf-forms-group-manager-edit input,
+.pdf-forms-group-manager-new input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.pdf-forms-group-manager-edit input[aria-invalid='true'],
+.pdf-forms-group-manager-new input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.pdf-forms-group-manager-edit .pdf-forms-field-error,
+.pdf-forms-group-manager-new .pdf-forms-field-error {
+  flex-basis: 100%;
+}
+
+.pdf-forms-group-manager-new {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.pdf-forms-group-manager-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+/* ---- CTC session toolbar + history dropdown (LOOK-5932) ---- */
+.ctc-history {
+  display: inline-flex;
+}
+.ctc-history-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.82rem;
+  color: #143b2f;
+  cursor: pointer;
+}
+.ctc-history-btn:hover {
+  background: #f3f4f6;
+}
+/* Appearance only — AnchoredPanel owns position/left/top/max-height. */
+.ctc-history-popover {
+  z-index: 20;
+  width: 320px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(19, 33, 27, 0.16);
+  padding: 6px;
+}
+.pdf-filler-history-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+.ctc-session-name {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #13211b;
+  background: transparent;
+  flex: 1 1 auto;
+  min-width: 6rem;
+  text-overflow: ellipsis;
+}
+.ctc-session-name:hover {
+  background: #f3f4f6;
+}
+.ctc-session-name:focus {
+  outline: none;
+  border-color: rgba(19, 33, 27, 0.2);
+  background: #fff;
+}
+.ctc-new-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.82rem;
+  color: #143b2f;
+  cursor: pointer;
+}
+.ctc-new-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+.ctc-new-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.preview-refresh-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(244, 243, 238, 0.55);
+}
+
+.ctc-picker-panel {
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 12px;
+  padding: 6px;
+  overflow: hidden;
+}
+
+/* ---------- CTC sign requests (LOOK-5933) ---------- */
+
+/* "My signature" dialog — checkerboard backing so a transparent PNG reads as transparent
+   rather than as a white card the user might mistake for part of the signature. */
+.ctc-sign-signature-current {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ctc-sign-signature-canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 0.75rem;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 10px;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, rgba(19, 33, 27, 0.06) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(19, 33, 27, 0.06) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(19, 33, 27, 0.06) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(19, 33, 27, 0.06) 75%);
+  background-size: 14px 14px;
+  background-position:
+    0 0,
+    0 7px,
+    7px -7px,
+    -7px 0;
+}
+
+.ctc-sign-signature-img {
+  max-width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+}
+
+/* Status badges — one vocabulary across the sign lists, the request detail and the session list. */
+.ctc-sign-badge {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.ctc-sign-badge-amber {
+  background: rgba(202, 138, 4, 0.12);
+  color: #854d0e;
+  border-color: rgba(202, 138, 4, 0.4);
+}
+
+.ctc-sign-badge-green {
+  background: rgba(58, 142, 96, 0.12);
+  color: #1f6243;
+  border-color: rgba(58, 142, 96, 0.4);
+}
+
+.ctc-sign-badge-red {
+  background: rgba(220, 80, 60, 0.1);
+  color: #8a2a1b;
+  border-color: rgba(220, 80, 60, 0.3);
+}
+
+.ctc-sign-badge-neutral {
+  background: rgba(19, 33, 27, 0.06);
+  color: rgba(19, 33, 27, 0.6);
+  border-color: rgba(19, 33, 27, 0.15);
+}
+
+/* Tabs over the request list. */
+.ctc-sign-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.1);
+  flex-shrink: 0;
+}
+
+.ctc-sign-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.65);
+  cursor: pointer;
+}
+
+.ctc-sign-tab:hover:not(:disabled) {
+  color: #143b2f;
+  background: rgba(19, 33, 27, 0.04);
+}
+
+.ctc-sign-tab-active {
+  color: #143b2f;
+  font-weight: 600;
+  border-bottom-color: #143b2f;
+}
+
+.ctc-sign-tab-count {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(202, 138, 4, 0.18);
+  color: #854d0e;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Row-level actions (withdraw / export) inside the enclosed list. */
+.ctc-sign-row-action {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  color: #143b2f;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ctc-sign-row-action:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.ctc-sign-row-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ctc-sign-export-group {
+  display: inline-block;
+}
+
+/* Empty states in the enclosed list stack an icon above the sentence. */
+.ctc-picker-panel .pdf-filler-history-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Request detail — left info pane. */
+.ctc-sign-detail-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+/* ---- Sign-request detail left panel ----
+   Its own classes rather than the shared .field / .field span used by the CTC editor and the
+   QuickForm forms: this panel needs the opposite type hierarchy (the value is the headline, the
+   label is the whisper), and changing .field globally would reflow both other surfaces. */
+
+.ctc-sign-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-bottom: none;
+}
+
+.ctc-sign-panel-head {
+  padding: 0.85rem 1rem 0.75rem;
+}
+
+/* The status value carries the weight — there is no "Status" label, because a green "Approved"
+   does not need to be told what it is. */
+.ctc-sign-status-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ctc-sign-status-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.ctc-sign-status-glyph-green {
+  background: #e3f0e5;
+  color: #1c6b3f;
+}
+
+.ctc-sign-status-glyph-amber {
+  background: #fbeed6;
+  color: #8a5b0b;
+}
+
+.ctc-sign-status-glyph-red {
+  background: #f8e3e0;
+  color: #8a2a1b;
+}
+
+.ctc-sign-status-glyph-neutral {
+  background: rgba(19, 33, 27, 0.07);
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.ctc-sign-status-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #13211b;
+}
+
+.ctc-sign-panel-sub {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.ctc-sign-panel-section {
+  border-top: 1px solid rgba(19, 33, 27, 0.07);
+  padding: 0.75rem 1rem;
+}
+
+/* Quiet, smaller and lighter than the content it introduces — never the loudest thing in view. */
+.ctc-sign-label {
+  margin: 0 0 0.4rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.ctc-sign-panel-section .ctc-sign-label {
+  margin-bottom: 0.45rem;
+}
+
+/* Fixed label column so every value shares one edge (auto sizing left a ragged gutter). */
+.ctc-sign-meta {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  row-gap: 0.3rem;
+  column-gap: 0.6rem;
+  align-items: baseline;
+  margin: 0;
+}
+
+.ctc-sign-meta dt {
+  font-size: 0.66rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.ctc-sign-meta dd {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #13211b;
+  overflow-wrap: anywhere;
+}
+
+/* Sits directly after the content — on a short request the actions belong where the reader's eye
+   already is, not stranded at the bottom of a tall panel. */
+.ctc-sign-panel-actions {
+  border-top: 1px solid rgba(19, 33, 27, 0.07);
+  padding: 0.75rem 1rem 1rem;
+}
+
+.ctc-sign-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Utility, not a peer of the primary action — a quiet link on its own line beneath them. */
+.ctc-sign-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(19, 33, 27, 0.6);
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.ctc-sign-action-row + .ctc-sign-link {
+  margin-top: 0.6rem;
+}
+
+.ctc-sign-link:hover {
+  color: #13211b;
+}
+
+.ctc-sign-preview-caption {
+  margin-left: 0.5rem;
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+/* The question sits left, its buttons right — the footer's only content while confirming. */
+.ctc-sign-confirm-question {
+  margin-right: auto;
+}
+
+/* Decision buttons share one silhouette so no single option is visually louder than the others;
+   only the accent colour distinguishes them. */
+.ctc-sign-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  background: transparent;
+  color: #13211b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+
+.ctc-sign-action:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ctc-sign-action-approve {
+  border-color: rgba(20, 92, 62, 0.45);
+  color: #145c3e;
+}
+
+.ctc-sign-action-approve:hover:not(:disabled) {
+  background: rgba(20, 92, 62, 0.08);
+  border-color: #145c3e;
+}
+
+.ctc-sign-action-deny,
+.ctc-sign-action-withdraw {
+  border-color: rgba(138, 42, 27, 0.35);
+  color: #8a2a1b;
+}
+
+.ctc-sign-action-deny:hover:not(:disabled),
+.ctc-sign-action-withdraw:hover:not(:disabled) {
+  background: rgba(138, 42, 27, 0.08);
+  border-color: #8a2a1b;
+}
+
+.pdf-forms-cta-danger {
+  background: #8a2a1b;
+  border-color: #8a2a1b;
+  color: #fff;
+}
+
+.pdf-forms-cta-danger:hover:not(:disabled) {
+  background: #6f1f12;
+  border-color: #6f1f12;
+}
+
+.ctc-sign-message {
+  margin: 0.65rem 0 0;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(19, 33, 27, 0.04);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(19, 33, 27, 0.8);
+  overflow-wrap: anywhere;
+}
+
+/* The invitation text offered for copying after a request is created (LOOK-6039). Same block as
+   .ctc-sign-message, plus pre-wrap: it is two lines, and what is shown must be what is copied.
+   A bordered box rather than a bare paragraph — it reads as a quotable artefact, not as UI prose. */
+.ctc-share-message {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 8px;
+  background: rgba(19, 33, 27, 0.04);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #13211b;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+/* Rendition switch sits on the right of the preview header. */
+.preview-panel > .preview-file-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Shared <Combobox> (src/components/Combobox.tsx). Named `combo-*`, not `ctc-sign-*`: the component
+   was extracted from the "Request signature" dialog in LOOK-5755 and KYC's Industry field now uses
+   it too, so a ctc-scoped name meant anyone tuning the signee picker silently restyled KYC. */
+/* Single-select combobox: closed it reads as one field with one value, which is what "exactly one
+   signee" should look like. The old always-open search + always-open ticked list read as a
+   multi-select. */
+
+.combo-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #13211b;
+  text-align: left;
+  cursor: pointer;
+}
+
+.combo-trigger:hover:not(:disabled) {
+  border-color: rgba(19, 33, 27, 0.35);
+}
+
+.combo-trigger:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.combo-trigger[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.combo-value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.combo-placeholder {
+  color: rgba(19, 33, 27, 0.63);
+}
+
+/* Fixed, not absolute, and positioned from JS: a modal <dialog> carries `overflow: auto` from the
+   UA stylesheet, so an absolutely-positioned panel gets cropped at the dialog's edge. A fixed
+   descendant escapes ancestor overflow while staying in the dialog's DOM (and so its top layer).
+   left / width / top-or-bottom / max-height all come from the measured trigger rect. */
+/* Appearance only — AnchoredPanel owns position/left/top/width/max-height. */
+.combo-panel {
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* The enclosed list is the scroller; this keeps the panel's own max-height honoured. */
+  overflow: hidden;
+  padding: 6px;
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(19, 33, 27, 0.14);
+}
+
+/* The panel's measured max-height now bounds the list (seven 34px rows when there is room), so the
+   list flexes instead of carrying its own cap — a fixed 238px would overflow a short viewport. */
+.combo-panel .combo-list {
+  margin-top: 6px;
+  max-height: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  border: none;
+  padding: 0;
+}
+
+.combo-panel .combo-row {
+  height: 34px;
+}
+
+.combo-row-highlight {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.combo-search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.6rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  color: rgba(19, 33, 27, 0.5);
+}
+
+/* The wrapper is the visible field, so the shared .pdf-forms-field input:focus outline would draw
+   a second frame inside it. */
+/* Reveals the optional note field. Sits inline with its own checkbox, not as a field label. */
+.ctc-sign-note-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.7);
+  cursor: pointer;
+}
+
+.ctc-sign-note-toggle input[type='checkbox'] {
+  width: auto;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.ctc-sign-note-toggle + textarea {
+  margin-top: 0.45rem;
+}
+
+.combo-search input:focus {
+  outline: none;
+}
+
+.combo-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.5rem 0;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #13211b;
+}
+
+.combo-list {
+  margin-top: 0.4rem;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 8px;
+  padding: 4px;
+  background: #fff;
+}
+
+.combo-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.combo-row:hover {
+  background: #f3f4f6;
+}
+
+.combo-row-active {
+  background: rgba(20, 59, 47, 0.1);
+}
+
+.combo-name {
+  font-size: 0.88rem;
+  color: #13211b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── QuickForm form sets + workspaces (LOOK-5961) ───────────────────────────── */
+
+/*
+ * The tab-bar layout must pass `.app-outlet`'s height straight through to the list page.
+ *
+ * `.app-outlet` is a 1fr grid row with `overflow: hidden` and delegates scrolling to its child, and
+ * `.pdf-forms-page` is written for that contract — `height: 100%` plus an inner scroll region. Slot
+ * an unstyled wrapper in between and the chain snaps: a plain block is auto-height, so the page's
+ * percentage height resolves to `auto`, it grows past the outlet, and the overflow is clipped with
+ * no scrollbar anywhere. Everything below the fold was simply unreachable on all three tabs.
+ *
+ * So the wrapper is a flex column that fills the outlet: the tab strip takes its natural height and
+ * the page takes the rest, with `min-height: 0` on both so the page may shrink below its content
+ * and scroll internally (a flex item's default `min-height: auto` would otherwise refuse to).
+ */
+.pdf-forms-nav-layout {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * `width: 100%` is load-bearing, not belt-and-braces. `.pdf-forms-page` sizes itself with
+ * `max-width: 1200px; margin: 0 auto`, which fills-then-centres under block layout — but as a flex
+ * item, auto cross-axis margins suppress `align-items: stretch`, so the page collapsed to
+ * fit-content and drifted off the tab strip's column (worst on the empty states, whose content is
+ * narrow). Giving it an explicit width restores fill-then-cap-then-centre.
+ */
+.pdf-forms-nav-layout > .pdf-forms-page {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/*
+ * Section nav for QuickForm's three lists: underline tabs on a strip that continues the app header.
+ *
+ * Underline rather than a segmented pill group: a segmented control conventionally means "same data,
+ * different view", but Forms / Form sets / Workspaces are three different collections. Reading as a
+ * second row of app chrome — full-bleed surface, hairline shared with the header — also stops the
+ * strip looking like a widget floating on the page background.
+ */
+.mode-tabs {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.55);
+  border-bottom: 1px solid rgba(19, 33, 27, 0.1);
+}
+
+/* Repeats `.pdf-forms-page`'s content column so the tabs sit directly above the page heading. */
+.mode-tabs-track {
+  display: flex;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.mode-tab {
+  padding: 0.6rem 0 0.5rem;
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(19, 33, 27, 0.55);
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  /* Sit the indicator ON the strip's hairline rather than 1px above it. */
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.mode-tab:hover {
+  color: #143b2f;
+  border-bottom-color: rgba(19, 33, 27, 0.22);
+}
+
+.mode-tab.active {
+  color: #143b2f;
+  font-weight: 600;
+  border-bottom-color: #143b2f;
+}
+
+/* The tabs are links, so the browser default is a focus ring on the text box only — which the
+   negative margin pushes half under the hairline. Draw it around the whole tab instead. */
+.mode-tab:focus-visible {
+  outline: 2px solid #143b2f;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+/* Expanded form-set row: the set's forms (tenant-shared) beside your workspaces from it. */
+.pdf-forms-set-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 0.9rem 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .pdf-forms-set-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdf-forms-set-panel-col {
+  min-width: 0;
+}
+
+.pdf-forms-set-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.pdf-forms-set-panel-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.5);
+}
+
+.pdf-forms-set-panel-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #205878;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pdf-forms-set-panel-link:hover {
+  text-decoration: underline;
+}
+
+.pdf-forms-set-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.pdf-forms-set-panel-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+}
+
+/* Rows sit inside a panel, so hover is a tint, not a shadow (LOOK-5735). */
+.pdf-forms-set-panel-item:hover {
+  background: rgba(19, 33, 27, 0.04);
+}
+
+.pdf-forms-set-panel-item-name {
+  color: #13211b;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Drawer rows open their workspace on click, like the rows on both lists. The name used to be an
+   <a> that underlined on hover; the row's own hover tint is the affordance now. */
+.pdf-forms-set-panel-item-clickable {
+  cursor: pointer;
+}
+
+.pdf-forms-set-panel-item-key {
+  flex-shrink: 0;
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.63);
+  font-variant-numeric: tabular-nums;
+}
+
+.pdf-forms-set-panel-item-warn {
+  flex-shrink: 0;
+  font-size: 0.76rem;
+  color: #a4442f;
+}
+
+.pdf-forms-set-panel-item-unavailable .pdf-forms-set-panel-item-name,
+.pdf-forms-set-editor-item.pdf-forms-set-panel-item-unavailable .pdf-forms-set-editor-item-name {
+  color: rgba(19, 33, 27, 0.63);
+  text-decoration: line-through;
+}
+
+.pdf-forms-set-panel-empty {
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.pdf-forms-set-updated {
+  margin-left: 0.75rem;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.63);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The accordion header is a flex row, not a table row, so it can't inherit the column-header
+ * table's colgroup. These widths mirror it (.pdf-forms-col-date 168px, .pdf-forms-col-kebab 52px)
+ * so the date lands under "Last updated" and the ⋮ under "Actions" instead of the <thead> labelling
+ * nothing. Keep the two in step if either width changes. */
+.pdf-forms-set-header-cells {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.pdf-forms-set-header-cells .pdf-forms-set-updated {
+  width: 168px;
+  margin-left: 0;
+}
+
+.pdf-forms-set-header-cells .pdf-forms-kebab-wrap {
+  width: 52px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Form-set editor dialog. */
+
+/*
+ * Wider than the stock 560px dialog: each row carries a name, its form key and three icon buttons,
+ * which the default width squeezes into two lines. The body scrolls rather than the dialog growing,
+ * so a 30-form set can't push Save off-screen — `max-height` on the dialog plus `min-height: 0` on
+ * the flex body is what actually delegates the overflow inward.
+ */
+.pdf-forms-set-editor-dialog {
+  max-width: 44rem;
+  max-height: min(80vh, 44rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-forms-set-editor-dialog .pdf-forms-dialog-body {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.pdf-forms-set-editor-name {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pdf-forms-set-editor-name > span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.5);
+}
+
+.pdf-forms-set-editor-name input {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
+  font-size: 1rem;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 8px;
+}
+
+.pdf-forms-set-editor-name input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+.pdf-forms-set-editor-forms {
+  margin-top: 1.25rem;
+}
+
+/*
+ * The form picker, inline inside the editor dialog rather than a dialog of its own.
+ * Inset + tinted so it reads as a panel that belongs to the section above it, not as a second page
+ * of content; the list caps its own height so a tenant with 60 forms can't push Cancel out of reach.
+ */
+.pdf-forms-add-form-picker {
+  margin: 0.6rem 0 0.9rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 10px;
+  background: rgba(19, 33, 27, 0.025);
+}
+
+.pdf-forms-add-form-picker .pdf-forms-add-form-list {
+  max-height: 15rem;
+  overflow-y: auto;
+}
+
+.pdf-forms-add-form-picker-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+/*
+ * The same picker, hung off the workspace filler's tab-strip "+" (LOOK-6023).
+ *
+ * Appearance only: AnchoredPanel owns position, width and max-height, so no `position` / `top` /
+ * `left` / `width` / `max-height` here. `overflow-y` IS required — the default `visible` ignores the
+ * max-height the primitive sets, and the panel would grow past the viewport with a tenant's 60 forms.
+ */
+.pdf-filler-add-form-panel {
+  min-width: 22rem;
+  padding: 0.25rem;
+  overflow-y: auto;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(19, 33, 27, 0.16);
+}
+
+/* Inside the panel the picker is already the surface, so it drops its own inset frame. */
+.pdf-filler-add-form-panel .pdf-forms-add-form-picker {
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+/* Discard prompt: takes over the footer in place of Save rather than opening a third modal. */
+.pdf-forms-discard-confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: flex-end;
+  font-size: 0.85rem;
+}
+
+.pdf-forms-discard-confirm > span {
+  margin-right: auto;
+  font-weight: 500;
+}
+
+.pdf-forms-discard-btn {
+  background: #8a3324;
+  color: #fdf7f5;
+  padding: 0.45rem 0.95rem;
+  font-size: 0.85rem;
+}
+
+.pdf-forms-set-editor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.pdf-forms-set-editor-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(19, 33, 27, 0.1);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.pdf-forms-set-editor-item:hover {
+  box-shadow: 0 1px 4px rgba(19, 33, 27, 0.1);
+}
+
+.pdf-forms-set-editor-item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-forms-set-editor-item-actions {
+  display: inline-flex;
+  gap: 0.15rem;
+}
+
+.pdf-forms-set-editor-item-actions button {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 6px;
+  color: rgba(19, 33, 27, 0.55);
+  cursor: pointer;
+  /* lucide svgs collapse in a tight flex without this. */
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.pdf-forms-set-editor-item-actions button:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.06);
+  color: #143b2f;
+}
+
+.pdf-forms-set-editor-item-actions button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Add-form picker. */
+.pdf-forms-add-form-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  max-height: 22rem;
+  overflow-y: auto;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.pdf-forms-add-form-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-forms-add-form-btn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.6rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  /* The global `button` rule paints text near-white for filled dark buttons. Any button that opts
+     out of that background MUST restate its colour or it renders invisible on a light surface. */
+  color: #13211b;
+}
+
+.pdf-forms-add-form-btn:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.05);
+}
+
+.pdf-forms-add-form-btn:disabled {
+  cursor: default;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.pdf-forms-add-form-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdf-forms-add-form-key,
+.pdf-forms-add-form-note {
+  flex-shrink: 0;
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.pdf-forms-add-form-fix {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: #205878;
+}
+
+.pdf-forms-search-input {
+  width: 100%;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.9rem;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 8px;
+}
+
+.pdf-forms-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.pdf-forms-dialog-actions button:not(.pdf-forms-cta) {
+  padding: 0.5rem 0.9rem;
+  background: none;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  /* Same reason as .pdf-forms-add-form-btn: opting out of the dark background means restating the
+     colour, or Cancel is white-on-cream. */
+  color: #13211b;
+}
+
+.pdf-forms-dialog-actions button:not(.pdf-forms-cta):hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.05);
+}
+
+/* A table cell that navigates: reads as a link, but is a button (no href to mis-copy). */
+.pdf-forms-linklike {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: #205878;
+  cursor: pointer;
+  text-align: left;
+}
+
+.pdf-forms-linklike:hover {
+  text-decoration: underline;
+}
+
+/* A form set with no usable forms: shown, disabled, with the reason beside it. */
+.pdf-forms-add-form-btn-disabled,
+.pdf-forms-add-form-btn:disabled {
+  color: rgba(19, 33, 27, 0.63);
+  cursor: default;
+}
+
+/* Workspace filler header: .pdf-filler is an edge-to-edge grid shell, so this row supplies its own
+   padding, and the counter needs a gap that the buttons can't overlap. */
+.pdf-workspace-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.pdf-filler-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/*
+ * The workspace's action row reuses `.pdf-filler-toolbar` — same row, same feature, on both fillers.
+ * Excel sits at the left edge and the export group at the right; `margin-left: auto` on the export
+ * side is what splits them, so anything added in between (the incomplete counter) stays central.
+ */
+.pdf-workspace-export {
+  margin-left: auto;
+}
+
+/* Inline title rename. Inherits .pdf-forms-page-title's type so swapping heading↔input doesn't
+   shift the row; the negative margin keeps the text on the same x as the heading it replaces. */
+.pdf-workspace-name-input {
+  width: 100%;
+  max-width: 32rem;
+  padding: 0.1rem 0.35rem;
+  margin-left: -0.35rem;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.25);
+  border-radius: 6px;
+}
+
+.pdf-filler-incomplete {
+  font-size: 0.82rem;
+  color: #a4442f;
+  white-space: nowrap;
+}
+
+/* A form deleted after the workspace was created: readable, but clearly not fillable. */
+.pdf-filler-tab-unavailable .pdf-filler-tab-label {
+  color: rgba(19, 33, 27, 0.63);
+  text-decoration: line-through;
+}
+
+/* A Copy whose pinned definition is no longer the form's current one (LOOK-6023).
+   Reuses the amber of .pdf-forms-dialog-warning — the caution Replace-PDF already shows when a
+   form shifts under existing fields, which is the same event from the designer's side.
+   Known collision, accepted at review: .pdf-filler-tab-dot-warn is the same amber for
+   "incomplete". The block carries an icon and a full sentence, so it does not read as a dot. */
+.pdf-filler-stale-note {
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+  margin: 0 0 0.6rem;
+  padding: 0.55rem 0.7rem;
+  background: rgba(214, 158, 46, 0.1);
+  border: 1px solid rgba(214, 158, 46, 0.3);
+  border-radius: 8px;
+  color: #8a5a00;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.pdf-filler-stale-note svg {
+  /* Without this the icon is squashed by the flex row (LOOK-5885's lesson). */
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pdf-filler-history-stale {
+  color: #b45309;
+  flex-shrink: 0;
+}
+
+.pdf-forms-notice {
+  margin: 0 1rem 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(164, 68, 47, 0.08);
+  color: #7c3320;
+  font-size: 0.85rem;
+}
+
+/* Excel import summary — the confirmation point before anything is written. */
+.pdf-workspace-import-summary {
+  display: grid;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+}
+
+.pdf-workspace-import-forms {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.pdf-workspace-import-warn {
+  margin: 0;
+  color: #7c3320;
+}
+
+.pdf-workspace-import-block {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(164, 68, 47, 0.1);
+  color: #7c3320;
+  font-weight: 500;
+}
+
+/* ---------- PDF Masking (LOOK-5885) ---------- */
+
+.mask-toolbar-spacer {
+  flex: 1;
+}
+
+.mask-keyword-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mask-keyword-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Mirrors `.pdf-forms-field input` — the app has no base rule for text inputs, so an unstyled
+   one renders as raw UA chrome (2px inset border, square corners, 16px) next to the rounded
+   fields around it. Not reused via that class: this is an inline row, not a stacked label field. */
+.mask-keyword-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.mask-keyword-row input:focus {
+  outline: 2px solid rgba(20, 59, 47, 0.35);
+  outline-offset: -1px;
+}
+
+.mask-keyword-row input[aria-invalid='true'] {
+  border-color: #c0392b;
+}
+
+/* 点了 Mask & Download 但一个文件都没加：红框标出这个字段（LOOK-5546） */
+.file-list.invalid {
+  outline: 1px solid #c0392b;
+  outline-offset: -1px;
+  border-radius: 10px;
+}
+
+.mask-keyword-arrow {
+  color: rgba(19, 33, 27, 0.55);
+  flex-shrink: 0;
+}
+
+/* The base `button` rule is the filled brand pill, so a class that doesn't reset it renders a
+   dark green pill per rule row. Matches `.file-list-remove-btn`, the app's inline remove. */
+.mask-keyword-remove {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: rgba(19, 33, 27, 0.5);
+  cursor: pointer;
+}
+
+.mask-keyword-remove:hover:not(:disabled) {
+  background: rgba(196, 108, 60, 0.12);
+  color: #7e3512;
+}
+
+.mask-keyword-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Ghost, not the base filled pill: the real primary action on this page is Mask & Download in
+   the toolbar, and a filled Add rule made the left panel's loudest control a secondary one.
+   Dashed to rhyme with `.file-list-add-btn`, the add control directly above it. */
+.mask-keyword-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  border: 1.5px dashed rgba(19, 33, 27, 0.2);
+  border-radius: 10px;
+  background: none;
+  color: rgba(19, 33, 27, 0.55);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.mask-keyword-add:hover:not(:disabled) {
+  border-color: rgba(19, 33, 27, 0.4);
+  color: #13211b;
+  background: rgba(20, 59, 47, 0.04);
+}
+
+.mask-keyword-count {
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.mask-keyword-count.at-limit {
+  color: #7c3320;
+}
+
+.mask-rules-hint {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.mask-preview-hint {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+/* 「替换为」输入框 + 内联预设下拉（LOOK-6613）。视觉上是同一个方框：外层 .mask-target-field
+   持有边框/圆角/背景，内部输入框和触发器都不再各自画框，避免双层边框。AnchoredPanel 的锚点是
+   触发器按钮本身（不是这个容器）——锚点必须是不包含输入框的叶子元素，否则 AnchoredPanel 的
+   Tab 处理会把"从输入框内 Tab 出去"误判成"从触发器 Tab 出去"而跳进选项列表。因此这里不用
+   `matchAnchorWidth`（锚到一个 26px 的图标按钮会让面板窄到不可读），改用下面的 min-width。 */
+.mask-target-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.mask-target-field:focus-within {
+  outline: 2px solid rgba(20, 59, 47, 0.35);
+  outline-offset: -1px;
+}
+
+.mask-target-field input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.7rem;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.mask-target-field input:focus {
+  outline: none;
+}
+
+.mask-target-trigger {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: rgba(19, 33, 27, 0.55);
+  cursor: pointer;
+}
+
+.mask-target-trigger:hover:not(:disabled) {
+  background: rgba(19, 33, 27, 0.08);
+  color: #13211b;
+}
+
+.mask-target-trigger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Appearance only — AnchoredPanel owns position/left/top/width/max-height (LOOK-5986). Must
+   declare its own overflow + z-index, or the fitness checks in noHandRolledPopovers.test.ts fail. */
+.mask-target-panel {
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 220px;
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid rgba(19, 33, 27, 0.15);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(19, 33, 27, 0.14);
+}
+
+.mask-target-option {
+  display: flex;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  font-size: 0.88rem;
+  text-align: left;
+  color: #13211b;
+  cursor: pointer;
+}
+
+.mask-target-option:hover {
+  background: #f3f4f6;
+}
+
+.mask-target-option-active {
+  background: rgba(20, 59, 47, 0.1);
+}
+
+.mask-target-empty {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+/* 刷新态复用 CTC 的 .preview-refresh-overlay，这里不再有自己的 chip 样式。 */
+
+/* ── 填表助手抽屉（LOOK-6073，设计 §8.1） ───────────────────────────────────
+   覆在 PDF 列上方，**不覆盖左侧字段列** —— 整个设计的要点就是用户一边说话一边能看到值落下来。
+   所以定位锚在 .pdf-filler-grid 上而不是视口上：grid 的第一列（420px）留给字段列。
+   .pdf-filler-grid 本身不改（单表 filler 用的是同一个类），只加这一层浮层。 */
+/* 助手是网格的一列（LOOK-6073），不再定位、不再有宽度公式 —— 宽度由 [data-panels] 的列定义给。
+   原来那条 min(420px, max(280px, calc(100% - 440px))) 连同它在 .zoom-controls 上的**逐字复制**
+   一起删掉了：同一个数字写两遍、且没有任何东西能验证它俩没走散。
+   边框而不是阴影：按本仓约定，浮在内容之上的用阴影，嵌进布局的用边框 —— 它现在是后者。 */
+.agent-drawer {
+  /* 包含块（LOOK-6073）。`.agent-jump-latest` 是 position:absolute，坐标
+     （bottom: 86px / left: 50%）只有以抽屉为包含块时才等于「贴在输入框上方、面板居中」。
+     抽屉从浮层改成网格列时删掉了 position，那个按钮于是拿一个很远的祖先当包含块、跑到面板外面去了
+     —— 用户实测报的。**改这一行之前先搜一下谁在依赖它。** */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+  border-left: 1px solid rgba(19, 33, 27, 0.12);
+}
+
+.agent-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid rgba(19, 33, 27, 0.08);
+}
+
+.agent-drawer-header h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.agent-drawer-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.agent-drawer-header-actions button[aria-label='Close fill assistant'] {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(19, 33, 27, 0.55);
+  display: inline-flex;
+  padding: 2px;
+}
+
+.agent-drawer-transcript {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* 空状态（LOOK-6073）：原来是一段顶部对齐的灰色说明，没有标题、没有例子，
+   而这是个没人用过的能力 —— 例子就是全部的 onboarding。
+   0.75 alpha ≈ 6.0:1；原来的 0.55 只有 3.79:1，不过 AA。 */
+.agent-drawer-empty {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.agent-empty-title {
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.9);
+}
+
+.agent-empty-hint {
+  margin: 0 0 0.6rem;
+}
+
+/* 示例提示是可点的（LOOK-6073）：点一下填进输入框。既然每行都是一个控件，
+   项目符号就没有意义了 —— 列表标记去掉，靠按钮自己的边框分行。 */
+.agent-empty-examples {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.agent-empty-example {
+  display: block;
+  width: 100%;
+  /* 左对齐：抽屉最窄 280px，这些句子会折行，居中会读不成一句话。 */
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.14);
+  border-radius: 8px;
+  background: none;
+}
+
+/* 悬停用底色而不是阴影：它们是嵌在面板里的整行控件，不是浮在上面的卡片。 */
+.agent-empty-example:hover {
+  background: rgba(19, 33, 27, 0.04);
+}
+
+/* 一个回合（LOOK-6073）。0.875rem = 14px 是本仓正文下限 —— 助手的回答是这块面板的
+   主体，之前它 13.1px，比同头部里的次要链接（16px）还小，层级完全倒置。 */
+.agent-turn {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* 角色靠标签区分，不靠底色：之前唯一的区别是 4% alpha 的背景，实测看不出来。 */
+.agent-turn-role {
+  margin: 0 0 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.72);
+}
+
+/* 提问给底色但不给更大的字号 —— 主体是回答。 */
+.agent-turn-user .agent-md {
+  background: rgba(19, 33, 27, 0.045);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+}
+
+/* 回合之间给分隔，回合内部不给。实测里一个回合的 4 个兄弟块读成 4 次发言。 */
+.agent-turn + .agent-turn {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(19, 33, 27, 0.07);
+}
+
+/* 3.79:1 → 4.6:1。原值 rgba(19,33,27,0.55) @ 12px 不达 AA。 */
+.agent-tool-activity {
+  margin: 0 0 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.agent-tool-activity-done {
+  color: rgba(19, 33, 27, 0.6);
+}
+
+/*
+ * 流断在这一步身上，它永远不会报回结果（LOOK-6262）。
+ *
+ * <p>比 done 更淡，而**不是**红的：这不是一个错误 —— 实测里那个 Run 在服务端跑完了，断的只是
+ * 这一条连接。染红会把一个「不知道」说成「失败了」，而用户下一步会去追一个并不存在的故障。
+ * 图标（CircleSlash）已经把「没有结果」说清楚了。
+ */
+.agent-tool-activity-interrupted {
+  color: rgba(19, 33, 27, 0.5);
+}
+
+.agent-tool-activity-interrupted svg {
+  /* 图标不能被 flex 压扁 —— lucide 的 svg 没有 flex-shrink 保护。 */
+  flex-shrink: 0;
+}
+
+.agent-thinking {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.agent-turn-cancelled {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  color: #7c3320;
+}
+
+/* 700px 实测横向溢出的来源：长 data_key 和 |---| 分隔行在 pre-wrap 下不断行。 */
+.agent-md {
+  overflow-wrap: anywhere;
+}
+
+/* 提示分两级并可关闭（LOOK-6073）。原来错误和普通提示共用同一条铁锈色条，
+   而且永远关不掉：实测拒掉一个 .txt 之后成功传了 PDF，那条拒绝提示还挂在
+   被接受的 chip 上方，读起来像它们被拒了。 */
+.agent-drawer-notice {
+  margin: 0;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.agent-drawer-notice > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.agent-drawer-notice-error {
+  color: #7c3320;
+  background: rgba(124, 51, 32, 0.07);
+}
+
+/* 普通提示（「还在上传」这类）不是错误，不该借用错误的颜色。 */
+.agent-drawer-notice-info {
+  color: #1f4f3d;
+  background: rgba(20, 59, 47, 0.06);
+}
+
+.agent-notice-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  display: inline-flex;
+  padding: 1px;
+  flex-shrink: 0;
+}
+
+.agent-notice-dismiss:hover {
+  opacity: 1;
+}
+
+/* 拖入高亮（design §8.6「支持拖入」）。整个输入区是投放目标 ——
+   往一个 16px 的回形针上拖文件不是现实的目标。 */
+.agent-attachments-drop {
+  outline: 2px dashed rgba(20, 59, 47, 0.45);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.agent-attachment-size {
+  color: rgba(19, 33, 27, 0.6);
+  flex-shrink: 0;
+}
+
+/* 只读窗口的行内说明与可见样式（LOOK-6073）。
+   UA 默认只把「值」变灰（rgb(0,0,0) → rgb(84,84,84)），空字段因此毫无变化 ——
+   而空字段正是助手要去填的那批。所以标记的是输入框本身，不是文字。
+   挂在 [aria-busy='true'] 上而不是新加一个类：那个属性已经接好了，一个真值源比两个好。 */
+.pdf-filler-form-panel-fields[aria-busy='true'] .pdf-filler-form-textarea:disabled,
+.pdf-filler-form-panel-fields[aria-busy='true'] input:disabled,
+.pdf-filler-form-panel-fields[aria-busy='true'] select:disabled {
+  background: rgba(19, 33, 27, 0.04);
+  border-color: rgba(19, 33, 27, 0.1);
+  cursor: not-allowed;
+}
+
+.pdf-filler-readonly-banner {
+  margin: 0 0 0.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #143b2f;
+  background: rgba(20, 59, 47, 0.07);
+  border-radius: 6px;
+}
+
+/* 助手状态行（LOOK-6073）：transcript 交出了 aria-live，由这一行独家播报。
+   实测冻结期间整页只有 transcript 和 zoom 百分比两个 live region，
+   字段进只读、恢复可编辑、Send 变 Cancel 全都没人说。 */
+.agent-status-line {
+  margin: 0;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.75rem;
+  color: rgba(19, 33, 27, 0.7);
+  border-top: 1px solid rgba(19, 33, 27, 0.06);
+}
+
+/*
+ * 四列：客户资料入口 / 回形针 / 输入框 / Send（LOOK-6262 起从三列变四列）。
+ *
+ * <p>下面每一项都**显式指定列**，而不是靠自动放置按出现顺序填。原因是 `.agent-attachments` 与
+ * `.agent-client-records` 都是 `display: contents`——它们的子元素直接成为本网格的项，于是「有几项」
+ * 取决于哪些槽位非空。靠自动放置时，加一个入口按钮就把后面全挤错位一格：回形针占了输入框的列、
+ * 输入框占了 Send 的列、Send 换行到下一行（浏览器实测到的）。
+ *
+ * <p>显式列之后，某个槽位为 null 只是留一个 0 宽的空列，别的项一动不动。
+ */
+.agent-drawer-composer {
+  border-top: 1px solid rgba(19, 33, 27, 0.08);
+  padding: 0.6rem 0.85rem 0.75rem;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  align-items: end;
+  gap: 0.5rem;
+}
+
+.agent-client-records-btn {
+  grid-column: 1;
+}
+
+.agent-attach-btn {
+  grid-column: 2;
+}
+
+.agent-drawer-composer > .agent-drawer-input {
+  grid-column: 3;
+}
+
+.agent-drawer-composer > .pdf-forms-cta {
+  grid-column: 4;
+}
+
+.agent-drawer-input {
+  /* 高度由 useAutoGrow 写内联样式；resize:none 是因为手柄和自增高会互相打架。 */
+  resize: none;
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.16);
+  border-radius: 6px;
+  min-width: 0;
+}
+
+.agent-attachments {
+  grid-column: 1 / -1;
+  display: contents;
+}
+
+.agent-attachment-chips {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 0 0 0.35rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.agent-attachment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 100%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.72rem;
+  border: 1px solid rgba(19, 33, 27, 0.14);
+  border-radius: 999px;
+  background: rgba(19, 33, 27, 0.03);
+}
+
+.agent-attachment-chip-failed {
+  border-color: rgba(124, 51, 32, 0.4);
+  color: #7c3320;
+}
+
+.agent-attachment-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14ch;
+}
+
+
+.agent-attachment-remove,
+.agent-attach-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(19, 33, 27, 0.55);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.agent-attach-btn:disabled,
+.agent-attachment-remove:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 「跳到最新」（LOOK-6073）。实测 1280×720 下 transcript 只露 14%，还钉在最老的一条上；
+   自动滚底解决默认状态，这个按钮解决「用户往上翻过之后」。
+   下面的坐标依赖 **.agent-drawer 的 position** 当包含块 —— 它现在是显式的 position:relative，
+   不再是「因为它是浮层所以顺便有」。这条依赖由 drawerContainingBlock.test.ts 钉住。
+   transform 是静态居中，不是 hover 位移 —— 不违反「hover 只用 box-shadow」那条。 */
+.agent-jump-latest {
+  position: absolute;
+  bottom: calc(86px + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  background: #fff;
+  color: #143b2f;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(19, 33, 27, 0.14);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.agent-jump-latest:hover {
+  box-shadow: 0 3px 12px rgba(19, 33, 27, 0.2);
+}
+
+/* 助手正文的 markdown（LOOK-6073）。
+   标题降到 h4/h5：抽屉自己的 h2 是「Fill assistant」，回答里的 ## 从属于它。 */
+.agent-md h4,
+.agent-md h5 {
+  margin: 0.9rem 0 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.agent-md h4:first-child,
+.agent-md h5:first-child {
+  margin-top: 0;
+}
+
+.agent-md p {
+  margin: 0.5rem 0;
+}
+
+.agent-md p:first-child {
+  margin-top: 0;
+}
+
+.agent-md p:last-child {
+  margin-bottom: 0;
+}
+
+/* 悬挂缩进：序号/圆点在外、续行对齐正文。pre-wrap 时代完全没有这个。 */
+.agent-md ul,
+.agent-md ol {
+  margin: 0.5rem 0;
+  padding-left: 1.35rem;
+}
+
+.agent-md li {
+  margin: 0.2rem 0;
+}
+
+.agent-md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(19, 33, 27, 0.06);
+  padding: 0.05em 0.28em;
+  border-radius: 3px;
+  /* data_key 很长，必须能断 —— 700px 实测过横向溢出。 */
+  overflow-wrap: anywhere;
+}
+
+/* 表格自带横滚容器：六列塞进 419px 比横滚更难读，而页面 body 绝不许横滚。 */
+.agent-md-table-wrap {
+  overflow-x: auto;
+  margin: 0.6rem 0;
+}
+
+.agent-md-table {
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  /* 刻意不设 width:100%。 */
+}
+
+.agent-md-table th,
+.agent-md-table td {
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  padding: 0.25rem 0.4rem;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.agent-md-table th {
+  font-weight: 600;
+  background: rgba(19, 33, 27, 0.03);
+}
+
+/* 助手提到的 data_key 可点，跳到那个字段。页面早就有 onFocusField + fieldRefs
+   在驱动 PDF↔字段列表互跳，抽屉之前没用上。 */
+/* 刻意轻：浏览器实测发现带底色的 chip 在一个编号列表里会把每一行都压住 ——
+   一段话里可能出现四五个 data_key，它们是引用而不是按钮。只留虚线下划线，
+   hover 才给底色。 */
+.agent-datakey {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: none;
+  color: #143b2f;
+  border: none;
+  border-bottom: 1px dotted rgba(20, 59, 47, 0.5);
+  padding: 0;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.agent-datakey:hover {
+  background: rgba(20, 59, 47, 0.1);
+  border-bottom-style: solid;
+}
+
+/* 「填表助手」触发按钮：与 Import data / Generate 同一条工具条，所以是 inline-flex，
+   而不是撑满宽度的块级按钮（放进工具条会把整条横向撑满，浏览器实测抓到过）。 */
+/* 字段列开关与助手开关外观相同，但**类名不同**（LOOK-6073）：`.agent-open-btn` 在测试与既有
+   CSS 里的意思是「助手那个开关」，让两个按钮共用它会让 `find('.agent-open-btn')` 指向先渲染的那个
+   —— 实测直接打红了两条既有用例。共用样式靠选择器列表，不靠共用类名。 */
+.agent-open-btn,
+.panel-fields-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: transparent;
+  color: #143b2f;
+  border: 1px solid rgba(20, 59, 47, 0.45);
+  border-radius: 8px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.agent-open-btn:hover:not(:disabled),
+.panel-fields-btn:hover:not(:disabled) {
+  background: rgba(20, 59, 47, 0.06);
+}
+
+.agent-open-btn[aria-pressed='true'],
+.panel-fields-btn[aria-pressed='true'] {
+  background: rgba(20, 59, 47, 0.1);
+}
+
+.agent-open-btn:disabled,
+.panel-fields-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 客户资料选择器（LOOK-6262）。浮层本体的定位/尺寸由 AnchoredPanel 负责；这里只管外观，
+   并且**自己声明 overflow** —— 面板不替内容决定滚不滚。
+   hover 只用 box-shadow，不得有 transform（CT 约定）。 */
+.client-records-panel {
+  /* AnchoredPanel 把面板 portal 到 document.body 且不写 z-index，外观归这里管。不写就是 `auto`，
+     会被页面上任何声明了正 z-index 的定位元素盖住（KYC 的吸顶标题栏就这么盖过目录浮层,
+     LOOK-5755）。取 100，与 `.split-btn-menu` / `.pdf-filler-excel-menu` 同档。 */
+  z-index: 100;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.14);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(19, 33, 27, 0.16);
+  padding: 0.75rem;
+  width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow: auto;
+}
+
+.client-records-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.client-records-label {
+  font-size: 0.72rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.client-records-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.8rem;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 6px;
+}
+
+/* 锁定的 family，只读 —— 没有换 family 的控件（一轮一个 family）。 */
+.client-records-family {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.client-records-entities-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.client-records-count {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.client-records-select-all {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.72rem;
+  color: #1f6f56;
+  cursor: pointer;
+}
+
+.client-records-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: auto;
+  max-height: 16rem;
+}
+
+.client-records-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.8rem;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #143b2f;
+}
+
+.client-records-row:hover {
+  box-shadow: 0 1px 6px rgba(19, 33, 27, 0.12);
+}
+
+.client-records-row-locked,
+.client-records-row-locked:hover {
+  cursor: not-allowed;
+  color: rgba(19, 33, 27, 0.63);
+  box-shadow: none;
+}
+
+.client-records-row-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.client-records-row-meta,
+.client-records-row-added {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: rgba(19, 33, 27, 0.5);
+  white-space: nowrap;
+}
+
+.client-records-note {
+  margin: 0;
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.client-records-confirm {
+  align-self: flex-end;
+  padding: 0.32rem 0.7rem;
+  font-size: 0.78rem;
+  background: #1f6f56;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.client-records-confirm:hover {
+  box-shadow: 0 2px 8px rgba(31, 111, 86, 0.35);
+}
+
+/* composer 上的客户资料入口与 chip 行（LOOK-6262）。chip 行与附件行分开两行：它们是两类素材，
+   混在一行会让 ✕ 的后果变得含混。 */
+.agent-client-records {
+  display: contents;
+}
+
+/* 两行 chip 各占满一整行；控制项在它们下面那一行（列由上面显式指定）。 */
+
+.agent-client-record-chips {
+  grid-column: 1 / -1;
+  list-style: none;
+  margin: 0 0 0.35rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.agent-client-record-family {
+  font-size: 0.72rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.agent-client-record-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.75rem;
+  background: rgba(31, 111, 86, 0.08);
+  border-radius: 999px;
+  color: #143b2f;
+}
+
+.agent-client-record-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 14ch;
+}
+
+.agent-client-record-type {
+  font-size: 0.68rem;
+  color: rgba(19, 33, 27, 0.5);
+}
+
+.agent-client-record-remove,
+.agent-client-records-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(19, 33, 27, 0.55);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.agent-client-records-btn:disabled,
+.agent-client-record-remove:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* 历史里的只读记录行 / 附件行（LOOK-6262）。与 composer 那两行同一外观，但都没有 ✕ ——
+   已经发出去的东西撤不回来，给一个撤销控件是在承诺做不到的事。 */
+.agent-client-records-history {
+  margin: 0.2rem 0 0.35rem;
+}
+
+/* ============================================================
+ * KYC Form (LOOK-5755)
+ *
+ * Design of record: ginkgo-docs/ui/5755/ui-prototype.md, with a runnable
+ * reference at ginkgo-docs/ui/5755/prototype.html (open it before changing
+ * layout — it renders the real seed schema through the same shape of renderer).
+ * ============================================================ */
+
+/* Fills `.app-outlet` and scrolls internally, exactly like `.pdf-forms-page`.
+ *
+ * `height: 100%` + `min-height: 0` + flex column is not decoration: `.app-outlet` is a 1fr grid row
+ * with `overflow: hidden` that delegates scrolling to its child. Drop `min-height: 0` and a flex
+ * item's default `min-height: auto` refuses to shrink below its content, so the column grows past
+ * the outlet and the overflow is clipped with no scrollbar — everything below the fold becomes
+ * unreachable. That exact regression shipped on QuickForm's list tabs; see the block comment above
+ * "QuickForm form sets + workspaces" earlier in this file. */
+.kyc-form-page {
+  /* Shared by the three sticky bars below. Each hangs exactly under the one above it, so the heights
+     are variables rather than numbers repeated across rules that would drift apart. */
+  --kyc-sticky-section-h: 2.15rem;
+  --kyc-sticky-group-h: 1.75rem;
+  /* The content column, applied to `.kyc-form-band` and `.kyc-form-cols-inner` rather than here.
+     See those rules — it is deliberate, and putting it back on this element is the bug. */
+  --kyc-content-max: 1200px;
+  /* Full width, and no horizontal padding: this element's only job is the height chain. Both are
+     what let `.kyc-form-cols` span the outlet and put its scrollbar on the window edge. */
+  padding: 1.5rem 0 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- the content column (LOOK-5755) ----
+ * The 1200px cap used to live on `.kyc-form-page`, which meant the scroll container was nested
+ * *inside* it: at 1440px wide the scrollbar was painted at x=1296 with the window edge at 1440, so it
+ * floated 144px into the page. Every other CT page anchors its scrollbar to an edge — `.ctc-page`
+ * takes the full outlet and lets its panes touch the sides — and a scrollbar in open space reads as
+ * a scrollbar belonging to nothing.
+ *
+ * So the page is full-width now and the cap sits here instead: on the band above the scroller, and on
+ * a wrapper inside it. Content lands in exactly the same place it did before (`border-box` plus
+ * `padding: 0 1.5rem` gives the same 1152px inner width); only the scroll container grew.
+ *
+ * `flex-shrink: 0` on the band is load-bearing — it is a flex child of the page, and the default
+ * `1` would let it compress instead of letting the scroller take the remaining height. */
+.kyc-form-band,
+.kyc-form-cols-inner {
+  width: 100%;
+  max-width: var(--kyc-content-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.kyc-form-band {
+  flex-shrink: 0;
+}
+
+.kyc-form-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* The one scroll region. The outline sticks inside it rather than scrolling separately —
+ * two side-by-side scrollbars is what makes a long form feel broken.
+ *
+ * Nothing here but the scrolling: it spans the full outlet so its scrollbar rides the window edge,
+ * and the two-column row it used to declare now lives on `.kyc-form-cols-inner`. Adding
+ * `max-width` or horizontal padding back to this rule is what put the scrollbar mid-page. */
+.kyc-form-cols {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* The rail-plus-form row, centred inside the full-width scroller. `align-items: flex-start` is what
+   lets `.kyc-form-outline` be shorter than the form and still stick. */
+.kyc-form-cols-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.75rem;
+}
+
+/* No card. The rail is a table of contents printed on the page, not a panel sitting on it: a 232px
+   white slab beside a form competes with the form for attention, and it ended in a blunt horizontal
+   edge wherever the last section happened to fall. What holds it together instead is the hairline on
+   `.kyc-outline-list` plus the active item's filled segment. */
+.kyc-form-outline {
+  position: sticky;
+  top: 0;
+  flex: 0 0 232px;
+  /* Without this the `flex-basis` above is decorative. A flex item's `min-width` defaults to `auto`,
+     i.e. its min-content width, and every item is `white-space: nowrap` — so the rail sized itself to
+     "C — Employment, source of wealth and funds" and measured 295px against its declared 232px. */
+  min-width: 0;
+  align-self: flex-start;
+  padding: 0.25rem 0 1rem;
+  z-index: 1;
+}
+
+.kyc-form-body {
+  flex: 1;
+  min-width: 0;
+  /* No scrollbar gutter here any more. It used to need one: the scroller ended at the content edge, so
+     on an overlay-scrollbar platform (where `clientWidth` never shrinks) the thumb was painted over
+     the last ~15px of content — directly on top of the note trigger at the row's trailing edge, which
+     could then not be clicked at all. Now that `.kyc-form-cols` spans the outlet, the 1.5rem on
+     `.kyc-form-cols-inner` is that clearance and this row would only push the form 20px off-centre
+     inside its own column. Verified by hand at 1440 / 820 / 400px wide before removing. */
+  padding-bottom: 3rem;
+}
+
+/* ---- sections + fields ---- */
+
+.kyc-form-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.kyc-form-status {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.kyc-section {
+  margin: 0 0 2rem;
+  /* The outline jumps here; keep the heading clear of the sticky header. */
+  scroll-margin-top: 0.75rem;
+}
+
+/* ---- sticky context (LOOK-5755) ----
+ * A section runs to 906px and a repeatable entry to 412px, so on a long form you scroll past both
+ * headings that say what you are filling in and nothing is left to tell you.
+ *
+ * Both bars are native `position: sticky`, and that is the whole reason this needs no JavaScript:
+ * sticky is scoped to its **containing block**, so a section title sticks only while its own
+ * `.kyc-section` is in view and then leaves with it — the next section's title takes over by itself.
+ * Same for an entry title inside its `.kyc-group-row`. There is no "which one is current" to compute
+ * and nothing to keep in step with the outline rail's `activeKey`.
+ *
+ * `background` is load-bearing, not decoration: sections have no background of their own, so without
+ * an opaque one the fields scroll visibly straight through the title. */
+.kyc-section-title {
+  position: sticky;
+  top: 0;
+  /* Highest of the three, so each lower bar slides under the one above rather than over it. */
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  min-height: var(--kyc-sticky-section-h);
+  /* No bottom margin: an unpainted gap between the two bars is a slot for content to show through.
+     The meta line's own top spacing does the separating. */
+  margin: 0;
+  background: #f3f0e7;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.kyc-section-meta {
+  margin: 0 0 0.9rem;
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.kyc-subsection {
+  margin: 1.1rem 0 0;
+}
+
+.kyc-subsection-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.85);
+}
+
+/* Named fields: label column, control, note trigger. Questions get their own block instead —
+   the split is by node kind, see `layoutFor` in FieldShell. */
+.kyc-row {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 24px;
+  gap: 0.75rem;
+  align-items: start;
+  margin: 0 0 0.7rem;
+}
+
+.kyc-row-label {
+  font-size: 0.84rem;
+  color: rgba(19, 33, 27, 0.7);
+  padding-top: 0.55rem;
+}
+
+.kyc-row-trailing {
+  padding-top: 0.5rem;
+}
+
+/* A run of consecutive named fields had nothing between them (LOOK-6550). The gap inside one
+   field's option list is 0.35rem and the gap between two fields was 0.7rem — only twice as much —
+   so a section built out of multi-selects read as one continuous list of checkboxes, and where one
+   question ended and the next began was a guess.
+ *
+ * Adjacent-sibling rather than a border on every row, because a section holds five kinds of sibling
+ * and four already carry a boundary of their own: `.kyc-question` a full border, `.kyc-group-wrap` a
+ * left rule, `.kyc-static` its own background, `.kyc-subsection` a heading. Two `.kyc-row`s touching
+ * is the only case with nothing at all, and `+` is exactly that case — which also means no line
+ * above the first row and none left dangling under the last, with no `:first-child` /
+ * `:last-child` patch to keep in step as the schema changes.
+ *
+ * The colour is `.kyc-question`'s border value rather than a new one, so the page keeps a single
+ * hairline weight. `padding-top` matches the existing `margin-bottom`, so the rule sits centred in
+ * the space between two fields. */
+.kyc-row + .kyc-row {
+  border-top: 1px solid rgba(19, 33, 27, 0.14);
+  padding-top: 0.7rem;
+}
+
+.kyc-question {
+  border: 1px solid rgba(19, 33, 27, 0.14);
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  margin: 0 0 0.7rem;
+}
+
+.kyc-question-invalid {
+  border-color: #c0392b;
+}
+
+.kyc-question-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.kyc-question-text {
+  font-size: 0.88rem;
+  color: #13211b;
+}
+
+.kyc-field-required {
+  color: #c0392b;
+}
+
+.kyc-input,
+.kyc-textarea {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.kyc-textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.kyc-input:focus,
+.kyc-textarea:focus {
+  outline: 2px solid rgba(20, 59, 47, 0.35);
+  outline-offset: -1px;
+}
+
+.kyc-invalid {
+  border-color: #c0392b;
+}
+
+.kyc-field-help {
+  margin: 0.3rem 0 0;
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.kyc-field-error {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  color: #c0392b;
+}
+
+.kyc-bool {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.kyc-bool-option,
+.kyc-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.86rem;
+  flex-wrap: wrap;
+}
+
+/* Option labels are whole sentences ("Beneficial owner is an entity listed within Paragraph 6.16 of
+   the AML/CFT Notice"), so the box lines up with the label's first line rather than the middle of a
+   two-line block. Yes/No keeps `center` — those labels are one word and never wrap. */
+.kyc-option {
+  align-items: flex-start;
+}
+
+.kyc-option > input[type='checkbox'],
+.kyc-option > input[type='radio'] {
+  flex: 0 0 auto;
+  margin-top: 0.14rem;
+}
+
+.kyc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* `flex-basis: 0` is the fix here, not tidying. At its content width a long label did not fit beside
+   the box, so `flex-wrap` moved the whole label onto the next flex line — under the box and flush
+   with the group's left edge, which read as an unticked box with no label followed by loose prose
+   (reported 2026-08-31; it only shows below roughly 1100px, which is why it survived the first
+   review). A zero basis always fits, so the label stays on the box's line, grows into whatever
+   width is left, and wraps inside itself — every label on one left edge, long or short. */
+.kyc-option-label {
+  color: #13211b;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.kyc-specify {
+  margin-top: 0.4rem;
+}
+
+.kyc-specify-inline {
+  width: auto;
+  flex: 1;
+  min-width: 10rem;
+  padding: 0.25rem 0.45rem;
+  font-size: 0.82rem;
+}
+
+.kyc-clear {
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.15rem 0.45rem;
+  font: inherit;
+  font-size: 0.74rem;
+  color: rgba(19, 33, 27, 0.7);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+/* Hover feedback is shadow only, never a position shift (LOOK-5735). */
+.kyc-clear:hover {
+  box-shadow: 0 1px 4px rgba(19, 33, 27, 0.16);
+}
+
+/* ---- notes ----
+ * `opacity`, never `display: none`: a display-hidden trigger is unreachable by keyboard, and the
+ * hover reveal only pays for itself if it stays free when unused. Filled notes pin it visible. */
+.kyc-note-trigger {
+  border: none;
+  background: transparent;
+  padding: 0.1rem;
+  line-height: 1;
+  color: rgba(19, 33, 27, 0.63);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, color 0.12s ease;
+}
+
+/* Every reveal is scoped to **one** field. `.kyc-group-row:focus-within` used to be in this list, and
+   a repeatable row holds a dozen fields plus its own row-level trigger — so typing in any one of them
+   lit up every trigger in the row at once, which is the noise the hover reveal exists to avoid. The
+   row's own trigger keeps `:hover` on its head, and `:focus-visible` on the trigger itself covers
+   reaching it by keyboard. */
+.kyc-row:hover .kyc-note-trigger,
+.kyc-row:focus-within .kyc-note-trigger,
+.kyc-question:hover .kyc-note-trigger,
+.kyc-question:focus-within .kyc-note-trigger,
+.kyc-group-row-head:hover .kyc-note-trigger,
+.kyc-group-row-head:focus-within .kyc-note-trigger,
+.kyc-note-trigger:focus-visible {
+  opacity: 1;
+}
+
+.kyc-note-trigger:hover {
+  color: #143b2f;
+}
+
+.kyc-field-note-read,
+.kyc-field-note-edit {
+  margin: 0.4rem 0 0;
+  padding: 0.35rem 0.55rem;
+  border-left: 2px solid rgba(19, 33, 27, 0.18);
+  background: #f5f6f2;
+  border-radius: 0 6px 6px 0;
+}
+
+.kyc-field-note-label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.kyc-field-note-text {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.8);
+  white-space: pre-wrap;
+}
+
+.kyc-field-note-input {
+  width: 100%;
+  margin-top: 0.2rem;
+  min-height: 3rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  resize: vertical;
+}
+
+/* `color` is not optional here, however inheritable it looks. The global `button` reset near the top
+   of this file paints every button as a dark pill with cream text, so a rule that turns the
+   background transparent and says nothing about colour keeps the cream — and this button sits on
+   `#f5f6f2`, which is the same cream. It rendered as an empty outlined box: zero contrast, the label
+   perfectly invisible. Every other quiet button in this feature (`.kyc-clear`, `.kyc-form-actions
+   button`) already states its colour; this one was the only one of the 63 on the page that did not. */
+
+/* ---- note images (LOOK-5755) ----
+ * Lives inside the note body, which only exists when the note is open or filled — so a field with
+ * no note is byte-for-byte unchanged and §6.5's density budget is untouched.
+ *
+ * Empty state is the drop zone (dragging a screenshot in is the real gesture); once an image lands
+ * it collapses to the strip. Thumbnails are painted on the page in read mode too, never behind a
+ * disclosure: for a compliance reviewer, a hidden image is hidden evidence. */
+
+.kyc-note-images {
+  margin-top: 0.5rem;
+}
+
+.kyc-note-image-strip {
+  list-style: none;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.kyc-note-image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  /* The item and the thumb both need it: a flex child with an image inside collapses otherwise. */
+  flex-shrink: 0;
+  max-width: 54px;
+}
+
+.kyc-note-image-thumb {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e3ddcb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kyc-note-image-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* A file still uploading. Same 54px box as a thumbnail, so the strip does not reflow when the
+   image lands — the tile is already the right size and only its contents change. Dashed, to read
+   as "not yet a thing" next to the solid-bordered thumbnails beside it. */
+.kyc-note-image-pending {
+  border-style: dashed;
+  background: #eee9db;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+/* A file id the server could not resolve. Degrades to a mark rather than a broken image — this
+   feature never deletes a t_file row, but t_file is repo-wide, so the case is reachable. */
+.kyc-note-image-missing {
+  font-size: 1rem;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.kyc-note-image-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(19, 33, 27, 0.72);
+  /* Stated, not inherited: the global `button` reset would otherwise leave this the cream it paints
+     every button, which on a dark chip is invisible. */
+  color: #f3f0e7;
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.kyc-note-image-thumb:hover .kyc-note-image-remove,
+.kyc-note-image-remove:focus-visible {
+  opacity: 1;
+}
+
+.kyc-note-image-name {
+  font-size: 0.6rem;
+  color: rgba(19, 33, 27, 0.5);
+  max-width: 54px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The thumbnail is a button because enlarging is an action — it must be keyboard-reachable in the
+   share view, where there is nothing else to tab to. */
+.kyc-note-image-open {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+  display: block;
+}
+
+/* `showModal()` puts this in the browser's top layer, so there is deliberately no z-index here —
+   nothing on the page can paint over it, whatever its stacking context claims. */
+.kyc-note-image-lightbox {
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem;
+  max-width: 92vw;
+  max-height: 92vh;
+  background: #fff;
+  box-shadow: 0 10px 40px rgba(19, 33, 27, 0.28);
+}
+
+.kyc-note-image-lightbox::backdrop {
+  background: rgba(19, 33, 27, 0.55);
+}
+
+.kyc-note-image-lightbox img {
+  display: block;
+  max-width: 88vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.kyc-note-image-lightbox-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.25rem 0.15rem;
+}
+
+.kyc-note-image-lightbox-name {
+  font-size: 0.76rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.kyc-note-image-lightbox-close {
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 7px;
+  background: transparent;
+  /* Stated, not inherited: the global `button` reset paints cream on a white dialog. */
+  color: #143b2f;
+  font: inherit;
+  font-size: 0.76rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+/* The adder is a 54px tile at the end of the strip, in **both** states — with images and without.
+   The component's large `dragDrop` theme measured 352x169, five times the ~34px the design costed,
+   and in a note whose content is one line of text it was the loudest thing on the row.
+ *
+ * Sized from the outside because `<UploadFiles>` has no size prop and its own class names are
+ * CSS-module hashes. Targeted by `[role="button"]` rather than by those hashes: the role is part of
+ * the component's accessible contract, the hash is a build artefact that changes on any edit. */
+.kyc-note-image-adder-compact {
+  width: 54px;
+  height: 54px;
+  max-width: 54px;
+}
+
+.kyc-note-image-adder-compact [role='button'] {
+  width: 54px;
+  height: 54px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Icon only at this size — the "Click to select files (or multiple)" copy does not fit in 54px and
+   the dashed tile already says what it is. */
+.kyc-note-image-adder-compact [role='button'] > *:not(svg) {
+  display: none;
+}
+
+/* The icon carries `margin-bottom: 8px` to separate it from that title text. With the title hidden
+   and `align-items: center`, the margin is still part of the flex item's box — so the glyph centred
+   4px high. Measured, not guessed. */
+.kyc-note-image-adder-compact [role='button'] > svg {
+  margin: 0;
+}
+
+/* ---- static prose ---- */
+
+.kyc-static {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: rgba(19, 33, 27, 0.72);
+  background: #f5f6f2;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  margin: 0 0 0.9rem;
+}
+
+.kyc-static-section {
+  margin: 0 0 0.9rem;
+}
+
+.kyc-static-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #143b2f;
+  cursor: pointer;
+}
+
+.kyc-static-body {
+  margin-top: 0.35rem;
+}
+
+/* ---- repeatable groups ----
+ * One containment device only: a left rule plus indent. Cards inside cards inside sections is
+ * where a form with seven groups stops being readable. */
+
+.kyc-group-wrap {
+  margin: 0 0 1.1rem;
+}
+
+/* The middle layer. Without it the stack reads "Section A: Customer Information" then "Entry 1",
+   and an entry with no group name above it is an entry of nothing — the reader has scrolled past the
+   only thing that said these rows are tax residencies. */
+.kyc-group-label {
+  position: sticky;
+  top: var(--kyc-sticky-section-h);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  min-height: var(--kyc-sticky-group-h);
+  background: #f3f0e7;
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(19, 33, 27, 0.85);
+}
+
+/* Same reasoning as the nested entry head below: a group inside a group row (the aliases within a
+   beneficial owner) would pin at the outer group's offset and cover it. */
+.kyc-group-wrap .kyc-group-wrap .kyc-group-label {
+  position: static;
+  background: transparent;
+  min-height: 0;
+  margin: 0 0 0.5rem;
+}
+
+.kyc-group-row {
+  border-left: 2px solid rgba(19, 33, 27, 0.16);
+  padding: 0 0 0 0.85rem;
+  margin: 0 0 0.7rem;
+}
+
+.kyc-group-row-head {
+  position: sticky;
+  top: calc(var(--kyc-sticky-section-h) + var(--kyc-sticky-group-h));
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: #f3f0e7;
+  /* Spacing as padding rather than margin, for the same reason as the section bar: a margin is not
+     painted, so the row's first field would flash through the gap on its way behind the bar. */
+  padding: 0.2rem 0 0.45rem;
+  margin: 0;
+}
+
+/* Only the outermost entry sticks. A nested group — the aliases inside a beneficial owner — would
+   otherwise pin at the same offset and cover the entry title it belongs to, so scrolling through
+   "Beneficial owner 2" would report "Alias 1" instead: the more specific label, but the less useful
+   one. Two `.kyc-group-row` ancestors is what makes a head nested; a top-level head has one. */
+.kyc-group-row .kyc-group-row .kyc-group-row-head {
+  position: static;
+  background: transparent;
+  padding: 0;
+  margin: 0 0 0.45rem;
+}
+
+.kyc-group-row-title {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.kyc-group-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.kyc-group-remove {
+  border: none;
+  background: transparent;
+  padding: 0.1rem;
+  line-height: 1;
+  color: rgba(19, 33, 27, 0.63);
+  cursor: pointer;
+  transition: color 0.12s ease;
+}
+
+.kyc-group-remove:hover {
+  color: #c0392b;
+}
+
+/* ---- read mode ----
+ * The opposite type hierarchy from the form: the value is the headline, the label is the whisper.
+ * Same reasoning as the sign-request read panel earlier in this file. */
+
+.kyc-read-field {
+  margin: 0 0 0.85rem;
+}
+
+.kyc-read-label {
+  font-size: 0.74rem;
+  color: rgba(19, 33, 27, 0.55);
+}
+
+.kyc-read-value {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #13211b;
+  white-space: pre-wrap;
+}
+
+/* An unanswered field shows a dash, never a blank — a blank cannot distinguish "not applicable"
+   from "nobody filled this in". */
+.kyc-read-value-empty {
+  font-weight: 400;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+/* A required answer the record is missing, in the shared view (LOOK-5755).
+ *
+ * **The border is what makes this visible, not the red.** The first version was a fill of #fbeceb
+ * with no border, and it was invisible: against the page's warm #f3f0e7 that fill scores 1.01:1 —
+ * the two colours have essentially the same luminance. Measured, not eyeballed.
+ *
+ * The follow-up instinct was "use a brighter red", and on a light background that makes it worse,
+ * because brighter means lighter means closer to the ground: #e5342a is 3.79:1 and #ef2b1a 3.66:1,
+ * both below the #c0392b already in use at 4.77:1. So the border carries the signal and the red
+ * stays the one this feature already speaks in — .kyc-field-error and .kyc-strip-error use it too,
+ * so a reader never sees two different reds meaning the same thing on one screen.
+ *
+ * Still no error copy: the label and the dash are the words, and a viewer cannot fix any of this.
+ * The negative margins keep flagged and unflagged labels on the same left edge — without them a
+ * marked field steps sideways and the column looks broken. */
+.kyc-read-field-missing {
+  /* 1px, not 1.5px: a fractional border rounds down to 1px at DPR 1 and paints 3 device pixels on
+     a retina screen, so the same declaration renders two different weights depending on the
+     display. 1px is what the approved screenshot actually showed. */
+  border: 1px solid #c0392b;
+  background: #fdf0ef;
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+/* ---- header actions, strip, outline ---- */
+
+.kyc-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* The completeness readout, and the loudest thing in this header on purpose.
+ *
+ * It replaced a "Check required fields" button that sat in this row looking exactly like Share.
+ * That button was the only way to learn anything was missing, so a form stayed silent until the
+ * user found it — and once found, the thing it produced (the count) is a *state*, not an action.
+ * States belong in a readout you cannot miss; the click is a shortcut to the next gap, not the way
+ * validation gets turned on. Hence the size: it out-weighs the two real actions beside it. */
+.kyc-completeness {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.kyc-completeness-open {
+  background: #fdf3e3;
+  border-color: rgba(176, 116, 15, 0.28);
+  color: #8a5a06;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.kyc-completeness-open:hover,
+.kyc-completeness-open:focus-visible {
+  box-shadow: 0 1px 6px rgba(138, 90, 6, 0.22);
+}
+
+.kyc-completeness-count {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The denominator is context, not news — it never moves on its own. */
+.kyc-completeness-of {
+  font-size: 0.86rem;
+  font-weight: 500;
+  opacity: 0.65;
+}
+
+.kyc-completeness-text {
+  font-weight: 500;
+}
+
+/* The affordance, kept quiet: this is a readout that happens to be clickable, not a call to act. */
+.kyc-completeness-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding-left: 0.55rem;
+  border-left: 1px solid rgba(138, 90, 6, 0.22);
+  font-size: 0.74rem;
+  opacity: 0.8;
+}
+
+.kyc-completeness-done {
+  background: #eaf4ee;
+  border-color: rgba(20, 59, 47, 0.16);
+  color: #1d6b4c;
+  font-weight: 500;
+}
+
+.kyc-form-actions button {
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.3rem 0.6rem;
+  font: inherit;
+  font-size: 0.78rem;
+  color: #143b2f;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.kyc-form-actions button:hover {
+  box-shadow: 0 1px 5px rgba(19, 33, 27, 0.16);
+}
+
+.kyc-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.45rem 0.7rem;
+  margin: 0 0 0.75rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.kyc-strip-readonly {
+  background: #eaf1f6;
+  color: #205878;
+}
+
+.kyc-strip-error {
+  background: #fbeceb;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+/* The gap count inside the viewer's "View only" strip (LOOK-5755). Carries .kyc-strip-error's
+   colours rather than the strip's blue, so it reads as the same fact as the red fields further down
+   the page — the strip stays informational, the count inside it is the warning. */
+.kyc-strip-readonly-gaps {
+  background: #fbeceb;
+  color: #c0392b;
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+}
+
+/* Export PDF (LOOK-6691): the button and, after a failure, one line beside it until the next try. */
+.kyc-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.kyc-export-error {
+  color: #c0392b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.kyc-strip-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 400;
+}
+
+.kyc-strip-stepper button {
+  border: 1px solid rgba(192, 57, 43, 0.35);
+  background: transparent;
+  border-radius: 6px;
+  padding: 0 0.35rem;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kyc-outline-total {
+  margin: 0 0 0.5rem;
+  padding: 0 0 0 0.7rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(19, 33, 27, 0.42);
+}
+
+/* The rule the items' segments sit on. Each item's `border-left` overlaps it by its own width, so an
+   active item reads as that stretch of the rule going dark rather than as a mark beside it. */
+.kyc-outline-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid rgba(19, 33, 27, 0.12);
+}
+
+.kyc-outline-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.32rem 0.2rem 0.32rem 0.7rem;
+  margin-left: -2px;
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.7);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+}
+
+.kyc-outline-item:hover {
+  color: #143b2f;
+  border-left-color: rgba(19, 33, 27, 0.35);
+}
+
+/* Fills the border-left the base rule has always reserved. */
+.kyc-outline-item-current {
+  border-left-color: #143b2f;
+  color: #143b2f;
+  font-weight: 500;
+}
+
+/* Fixed width, so a lettered name and an unlettered one start at the same x. `aria-hidden` on the
+   span: the letter is already in the link's accessible name via `title`, and read aloud on its own it
+   is just "A". */
+.kyc-outline-letter {
+  flex: 0 0 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(19, 33, 27, 0.38);
+}
+
+.kyc-outline-item-current .kyc-outline-letter {
+  color: #143b2f;
+}
+
+/* Wraps rather than ellipsising. No width short enough to be worth having fits "Employment, source of
+   wealth and funds" on one line, and a contents entry that hides half its own name behind a `title`
+   tooltip is not navigable — two sections wrapping to a second line costs two lines. */
+.kyc-outline-name {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+/* `tabular-nums` so `0/5` and `10/11` occupy the same width — proportional digits made the counts a
+   ragged column down the right of the rail. */
+.kyc-outline-count {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: rgba(19, 33, 27, 0.42);
+}
+
+/* ---- the rail, collapsed (LOOK-5755) ----
+ * Under 900px the 232px rail was 28% of the window and squeezed the form's label/control columns to
+ * ~440px. Stacking the twelve entries above the form instead would push the first field off screen,
+ * so the rail collapses to a bar of ticks and moves the outline into a flyout. The bar is the point:
+ * a rail that just disappeared would take "where am I" and "which section has a problem" with it. */
+@media (max-width: 900px) {
+  .kyc-form-outline {
+    flex: 0 0 28px;
+  }
+}
+
+.kyc-rail-collapsed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kyc-rail-handle {
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  background: transparent;
+  border-radius: 7px;
+  padding: 0.2rem 0.25rem;
+  line-height: 1;
+  /* Stated, not inherited: the global `button` reset would otherwise leave this the cream `#f5f6f2`
+     it paints every button, on a cream page. */
+  color: rgba(19, 33, 27, 0.55);
+  cursor: pointer;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.kyc-rail-handle:hover,
+.kyc-rail-handle[aria-expanded='true'] {
+  color: #143b2f;
+  border-color: rgba(19, 33, 27, 0.4);
+}
+
+.kyc-rail-ticks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  align-items: center;
+}
+
+.kyc-rail-tick {
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: rgba(19, 33, 27, 0.16);
+}
+
+.kyc-rail-tick-current {
+  background: #143b2f;
+  /* Wider as well as darker: on a 3px mark colour alone is not a reliable difference. */
+  width: 5px;
+}
+
+.kyc-rail-tick-error {
+  background: #c0392b;
+}
+
+/* Appearance only. `AnchoredPanel` owns placement — this class must never say `position`, and it has
+   to declare its own `overflow` so it can honour the max-height the primitive measures for it. Both
+   are checked by `lib/overlay/__tests__/noHandRolledPopovers`. */
+.kyc-outline-flyout {
+  overflow-y: auto;
+  /* Above the three sticky bars (`.kyc-section-title` 5, `.kyc-group-label` 4, `.kyc-group-row-head`
+     3). The primitive portals this to `document.body` and sets no `z-index` of its own, so without
+     one here the panel sits at `auto` in the root stacking context — under every one of them. The
+     section bar then painted across the open outline, which is the one moment the outline exists. */
+  z-index: 100;
+  min-width: 232px;
+  padding: 0.6rem 0.7rem 0.7rem;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(19, 33, 27, 0.12);
+}
+
+.kyc-outline-errors {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  background: #fbeceb;
+  color: #c0392b;
+  border-radius: 9px;
+  padding: 0 0.35rem;
+}
+
+/* `AddCopyButton` carries QuickForm's primary-CTA look (dark pill) because there it *is* the
+ * primary action. Adding one more row to a seven-group form is not — it reads as loud as the record
+ * itself. Same component and pending behaviour, quieter presentation. */
+.kyc-group-add.pdf-filler-add-copy {
+  background: transparent;
+  color: rgba(19, 33, 27, 0.72);
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 400;
+  box-shadow: none;
+  transition: box-shadow 0.15s ease;
+}
+
+.kyc-group-add.pdf-filler-add-copy:hover:not(:disabled) {
+  background: transparent;
+  color: #143b2f;
+  box-shadow: 0 1px 5px rgba(19, 33, 27, 0.16);
+}
+
+/* Add 按钮和组级错误同住一行: 空组没有任何字段, 这里就是「跳到下一个缺口」的落点。 */
+.kyc-group-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  scroll-margin-block: 96px;
+}
+
+.kyc-form-heading {
+  min-width: 0;
+}
+
+.kyc-form-title-input {
+  font: inherit;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #143b2f;
+  background: #fff;
+  border: 1px solid rgba(19, 33, 27, 0.25);
+  border-radius: 6px;
+  /* Same box as `.kyc-form-title-editable`, so clicking the title swaps in an input under the
+     pointer instead of shifting the text sideways. */
+  padding: 0.1rem 0.35rem;
+  margin-left: -0.35rem;
+  width: 22rem;
+  max-width: 100%;
+}
+
+/* The title itself is the rename control, matching `.pdf-designer-editable` on the QuickForm
+   designer's form name. It replaced a separate "Rename" button that lived at `opacity: 0` until the
+   heading was hovered — undiscoverable on a touch screen, where the record then could not be renamed
+   at all. `cursor: text` is the tell that this becomes an input, not that it performs an action. */
+.kyc-form-title-editable {
+  cursor: text;
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+  margin-left: -0.35rem;
+  transition: background 120ms ease;
+}
+
+.kyc-form-title-editable:hover,
+.kyc-form-title-editable:focus-visible {
+  background: rgba(19, 33, 27, 0.06);
+}
+
+.kyc-form-status-error {
+  color: #c0392b;
+}
+
+.kyc-form-retry {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: inherit;
+  color: #c0392b;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.kyc-strip-conflict {
+  background: #fdf3e3;
+  color: #7e3512;
+}
+
+.kyc-strip-conflict button {
+  border: 1px solid rgba(126, 53, 18, 0.35);
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.1rem 0.5rem;
+  font: inherit;
+  font-size: 0.78rem;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kyc-page-state {
+  margin: 3rem auto;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(19, 33, 27, 0.6);
+}
+
+.kyc-share-hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.84rem;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.kyc-share-link {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.kyc-share-link input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.8rem;
+  background: #f5f6f2;
+}
+
+/* Copy. The trap: dropping the global `button` reset's background without restating its colour
+   leaves cream text, here on the dialog's white — an outlined box with nothing legible in it. (The
+   note's old Edit button was the other instance; it went away with LOOK-5755's note editor, which
+   is why this comment no longer points at it.) */
+.kyc-share-link button {
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  background: transparent;
+  border-radius: 8px;
+  padding: 0.3rem 0.7rem;
+  font: inherit;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.7);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.kyc-share-link button:hover {
+  box-shadow: 0 1px 5px rgba(19, 33, 27, 0.16);
+}
+
+/* ---- record list ----
+   No table rules of its own: the list uses .pdf-forms-table-wrap / .pdf-forms-table, the same card,
+   header tint, row hover and kebab as every other list in the app. */
+
+.kyc-row-control {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.kyc-input-date {
+  max-width: 11rem;
+}
+
+.kyc-specify-input {
+  margin-top: 0.3rem;
+}
+
+.kyc-static-title {
+  font-weight: 600;
+  color: #143b2f;
+}
+
+.kyc-group-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* ---- import page ---- */
+
+.kyc-import-source {
+  flex: 1;
+  min-height: 24rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(19, 33, 27, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  /* `wrap="off"` needs somewhere to scroll: a three-thousand-line schema is wide. */
+  overflow: auto;
+  resize: vertical;
+  white-space: pre;
+}
+
+.kyc-import-file {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.kyc-import-file:focus-within {
+  outline: 2px solid #205878;
+  outline-offset: 2px;
+}
+
+.kyc-import-file input[type='file'] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.kyc-import-violations {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  color: #c0392b;
+}
+
+/* Not a schema problem — a transport one. Same weight, no bullet, since there is only ever one. */
+.kyc-import-apply-error {
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  color: #c0392b;
+}
+
+/* Empty-tenant notice on the import page: this workspace has no form yet, and pasting a schema
+   creates it. Informational, not an error — deliberately not styled like .kyc-import-apply-error,
+   because "you have nothing yet" is a normal starting state on a freshly provisioned tenant. */
+.kyc-import-empty {
+  margin: 0 0 0.7rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(19, 33, 27, 0.14);
+  border-radius: 8px;
+  background: rgba(19, 33, 27, 0.03);
+  font-size: 0.84rem;
+  color: rgba(19, 33, 27, 0.75);
+}
+
+.kyc-import-review {
+  margin: 0.8rem 0 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(19, 33, 27, 0.16);
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+.kyc-import-review p {
+  margin: 0 0 0.35rem;
+}
+
+.kyc-import-review-fields {
+  font-size: 0.78rem;
+  color: rgba(19, 33, 27, 0.65);
+  word-break: break-word;
+}
+
+/* ---------- 审核意见 (LOOK-6521) ----------
+ *
+ * 三种标记会出现在同一个字段上，必须互相分得开：
+ *   - note        中性左边框 + 「Note」标签        —— 填表人写的内容
+ *   - 必填缺口     1px #c0392b 红框                —— 表单自己算出来的
+ *   - 审核意见     #d2600b 橙左边框 + 标签          —— 人写的批注
+ *
+ * 橙与红在边框上分得开，但两者的浅填充(#fdf1e5 / #fdf0ef)几乎一样 ——
+ * 所以审核意见靠**左边框 + 文字标签**立住，不靠填充色。
+ *
+ * 字号只有三档：11px(meta/标签) / 12px(按钮) / 13px(正文)。之前发言正文与
+ * 「Closed by …」各用一套，块内看起来像换了字体。
+ */
+.kyc-review-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+/* 几何对齐 LOOK-5755 的 note 卡: 两张卡叠在同一个字段下面, 圆角/内距/字号各差一档
+   会看出来。**颜色不对齐** —— 琥珀与灰的分野是有理由的(见本节开头), 几何的差异没有。 */
+.kyc-review-thread {
+  padding: 0.35rem 0.55rem;
+  border-left: 2px solid #d2600b;
+  background: #fdf1e5;
+  border-radius: 0 6px 6px 0;
+}
+
+.kyc-review-thread-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.kyc-review-thread-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #a04a06;
+}
+
+/* 上浮/隐藏的标注。两种文案在组件里分开，这里只管样式。 */
+.kyc-review-notice {
+  font-size: 0.69rem;
+  color: #8a5a06;
+  border: 1px solid rgba(138, 90, 6, 0.35);
+  border-radius: 3px;
+  padding: 0 0.28rem;
+}
+
+.kyc-review-items {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.kyc-review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.kyc-review-item-main { flex: 1 1 auto; min-width: 0; }
+
+/* 作者 + 时间。审核意见是「谁在什么时候说的」, 这是它区别于 note 的一半。
+   这几个值是原先文件末尾那份重复声明里的 —— 它靠位置在后面赢了两百行, 现在合并到这里。 */
+.kyc-review-item-meta {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 0 0.1rem;
+  font-size: 0.68rem;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.kyc-review-item-author { font-weight: 600; }
+
+.kyc-review-item-body {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(19, 33, 27, 0.88);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 十二行封顶, 超出折起来。line-clamp 需要 -webkit- 前缀, 这是它唯一被普遍支持的写法。 */
+.kyc-review-item-body-clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 12;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 透明底必须显式写 color —— 全局 button 复位是 #f5f6f2。 */
+.kyc-review-more {
+  margin-top: 0.15rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a04a06;
+  font: inherit;
+  font-size: 0.72rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.kyc-review-item-deleted {
+  margin: 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+/* 每个按钮都显式写 color —— 全局 button 复位是 #f5f6f2。 */
+.kyc-review-item-delete {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: rgba(19, 33, 27, 0.63);
+  cursor: pointer;
+  padding: 0;
+}
+
+.kyc-review-item-delete svg { flex-shrink: 0; }
+
+/* 输入框独占一行；按钮在下方右对齐。窄列下不再互相挤压。 */
+.kyc-review-reply-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.4rem;
+  min-height: 3rem;
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid rgba(19, 33, 27, 0.18);
+  border-radius: 6px;
+  background: #fff;
+  color: rgba(19, 33, 27, 0.88);
+  /* 高度由 AutoGrowTextarea 每次按键设 inline style, 留着 resize 只会让用户拖出来的高度
+     在下一个字符处被抹掉 —— 两个东西抢同一个属性, 用户那边必输。 */
+  resize: none;
+}
+
+.kyc-review-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+
+/* 关闭不可逆，这句话是它唯一的挡板；推到最左，与按钮拉开。 */
+.kyc-review-warn {
+  margin-right: auto;
+  font-size: 0.69rem;
+  color: #8a5a06;
+}
+
+.kyc-review-btn {
+  font: inherit;
+  font-size: 0.74rem;
+  padding: 0.18rem 0.55rem;
+  /* 白字压在 #d2600b 上是 3.88:1, 低于 AA(4.5)。#a04a06 是 6.04:1。 */
+  border: 1px solid #a04a06;
+  border-radius: 4px;
+  background: #a04a06;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.kyc-review-btn:disabled { opacity: 0.45; cursor: default; }
+
+.kyc-review-btn-quiet {
+  background: transparent;
+  border-color: rgba(19, 33, 27, 0.22);
+  color: rgba(19, 33, 27, 0.7);
+}
+
+/* 已解决：默认折叠成一行。不再占位置，但也不能删 —— 要留住「这里发生过什么」。 */
+.kyc-review-thread-resolved {
+  border-left-color: rgba(19, 33, 27, 0.2);
+  background: #f5f6f2;
+  padding: 0;
+}
+
+.kyc-review-fold {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.74rem;
+  color: rgba(19, 33, 27, 0.7);
+  text-align: left;
+  cursor: pointer;
+}
+
+.kyc-review-fold-label {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+/* 首条发言的摘要。单行省略, 它是线索不是内容 —— 想看全文就展开。
+   min-width:0 是必须的: flex 子元素默认 min-width:auto, 不写它 text-overflow 不会生效。 */
+.kyc-review-fold-snippet {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(19, 33, 27, 0.7);
+}
+
+.kyc-review-fold-meta { color: rgba(19, 33, 27, 0.63); white-space: nowrap; flex: 0 0 auto; }
+.kyc-review-fold-chevron {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: rgba(19, 33, 27, 0.63);
+  transition: transform 0.12s ease;
+}
+.kyc-review-fold-chevron-up { transform: rotate(180deg); }
+.kyc-review-fold-body { padding: 0 0.6rem 0.5rem; }
+
+/* 开题入口：右栏里的裸图标，与 note 的触发器同位置、同分量、同显隐规则 ——
+   平时 opacity 0，靠所在字段的 hover / focus-within 揭示。 */
+.kyc-review-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #d2600b;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease, background 0.12s ease;
+}
+
+/* 与 note 一样：每次揭示只覆盖**一个**字段。刻意不写 `.kyc-group-row:focus-within` ——
+   一个可重复行里有十来个字段，在任一字段打字就会点亮整行的触发器，那正是 hover 揭示
+   要避免的噪音（见上方 .kyc-note-trigger 的同款注释）。
+
+   `[aria-expanded='true']` 那条是给「输入框已经打开」的那个图标用的：它此刻是关闭输入框的
+   唯一开关，鼠标一移开就消失的话，用户只能靠 Cancel 按钮退出。 */
+.kyc-row:hover .kyc-review-trigger,
+.kyc-row:focus-within .kyc-review-trigger,
+.kyc-question:hover .kyc-review-trigger,
+.kyc-question:focus-within .kyc-review-trigger,
+.kyc-read-field:hover .kyc-review-trigger,
+.kyc-read-field:focus-within .kyc-review-trigger,
+.kyc-review-trigger:focus-visible,
+.kyc-review-trigger[aria-expanded='true'] {
+  opacity: 1;
+}
+
+.kyc-review-trigger:hover { background: rgba(19, 33, 27, 0.06); }
+
+/* 没有指针设备就没有 hover —— 揭示式触发器在平板上永远不出现。
+   note 只是个便利, 少了它还能填表; 审核意见的这个图标**就是功能本身**, 而它的用户(复核人)
+   没有别的入口可退。两个一起钉住: 同一屏上两个同位同分量的图标行为不一致更糟(Phase 2c / M8)。 */
+@media (hover: none) {
+  .kyc-note-trigger,
+  .kyc-review-trigger {
+    opacity: 1;
+  }
+}
+.kyc-review-trigger svg { flex-shrink: 0; }
+
+/* 阅读态原本没有右栏，补一个，与编辑态的 kyc-row-trailing 同位。 */
+.kyc-read-field { display: flex; align-items: flex-start; gap: 0.4rem; }
+.kyc-read-field-main { flex: 1 1 auto; min-width: 0; }
+.kyc-read-trailing { flex: 0 0 auto; }
+
+.kyc-review-composer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.35rem;
+}
+
+.kyc-review-composer .kyc-review-actions { margin-top: 0.35rem; }
+
+.kyc-review-record-level-head {
+  margin: 0;
+  font-size: 0.69rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(19, 33, 27, 0.63);
+}
+
+.kyc-review-record-level {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+/* 选择器必须压过 `.kyc-form-actions button`(0,1,1)。原来写成 `.kyc-review-unresolved`(0,1,0),
+   于是它声明的**每一个**属性都输掉了 —— 颜色、底色、边框、圆角、内距、字号 ——
+   这个提醒渲染出来与旁边的 Share 按钮一模一样。只有那条通用规则没提的几个属性活了下来。
+   复核人那一侧在 strip 里, 不受那条规则影响, 所以两处都要能用(Phase 2c / M5)。 */
+.kyc-strip .kyc-review-unresolved,
+.kyc-form-actions button.kyc-review-unresolved,
+.kyc-review-unresolved {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.74rem;
+  /* #d2600b 当**文字**用只有 3.4–3.9:1, 低于 AA。同色相加深到 #a04a06 是 5.3–6.0:1。
+     边框与触发器图标仍用 #d2600b —— 那是非文字, 阈值 3:1, 本来就过。 */
+  color: #a04a06;
+  background: #fdf1e5;
+  border: 1px solid rgba(160, 74, 6, 0.5);
+  border-radius: 4px;
+  padding: 0.1rem 0.4rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* 与页头兄弟控件 .kyc-completeness-go 同一个形状: 名词后面跟一个动词, 否则
+   「2 unresolved ⌄」读起来像个下拉筛选而不是「带我去下一条」(Phase 2c / M5)。 */
+.kyc-review-unresolved-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding-left: 0.45rem;
+  border-left: 1px solid currentColor;
+  font-size: 0.72rem;
+  opacity: 0.75;
+}
+
+.kyc-review-unresolved svg { flex-shrink: 0; }
+
+.kyc-review-error {
+  margin: 0.3rem 0 0;
+  font-size: 0.72rem;
+  color: #a8332a;
+}
+
+/* file-masker：外壳在合规工具 .app-shell 的两行之外加一行 footer，版本号固定在页面最底部 */
+.mask-shell { grid-template-rows: auto minmax(0, 1fr) auto; }
+.mask-version { text-align: center; font-size: 12px; opacity: 0.6; padding: 4px 0 6px; min-height: 1.5em; }
+
+/* ── 邮件打码演示页（LOOK-6764）：配色、输入框、移除按钮与 PDF 打码页一致，类名独立 ── */
+.mail-demo { overflow: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; max-width: 960px; width: 100%; margin: 0 auto; }
+.mail-card { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(19, 33, 27, 0.08); border-radius: 14px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.mail-card h2 { margin: 0; font-size: 1.05rem; font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif; }
+.mail-card .status { margin: 0; }
+.mail-card-header { display: flex; align-items: center; gap: 0.75rem; }
+.mail-rules-state { margin-left: auto; font-size: 0.85rem; color: rgba(19, 33, 27, 0.6); }
+.mail-flow { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.mail-flow-box { display: flex; flex-direction: column; padding: 0.6rem 0.9rem; border: 1px solid rgba(19, 33, 27, 0.15); border-radius: 10px; background: #fff; }
+.mail-flow-label { font-size: 0.75rem; color: rgba(19, 33, 27, 0.55); }
+.mail-flow-masker { background: #143b2f; color: #f5f6f2; font-weight: 600; justify-content: center; }
+.mail-flow-arrow { color: rgba(19, 33, 27, 0.45); font-size: 1.2rem; }
+.mail-flow-meta { margin: 0; font-size: 0.85rem; color: rgba(19, 33, 27, 0.6); }
+.mail-rule-list { display: flex; flex-direction: column; gap: 8px; }
+.mail-rule-row { display: flex; align-items: center; gap: 8px; }
+.mail-rule-row input { flex: 1; min-width: 0; padding: 0.5rem 0.7rem; border: 1px solid rgba(19, 33, 27, 0.2); border-radius: 8px; background: #fff; font-size: 0.9rem; }
+.mail-rule-row input:focus { outline: 2px solid rgba(20, 59, 47, 0.35); outline-offset: -1px; }
+.mail-rule-arrow { color: rgba(19, 33, 27, 0.55); flex-shrink: 0; }
+.mail-rule-remove { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; padding: 0; border-radius: 6px; background: none; color: rgba(19, 33, 27, 0.5); }
+.mail-rule-remove:hover:not(:disabled) { background: rgba(196, 108, 60, 0.12); color: #7e3512; }
+.mail-rule-add { align-self: flex-start; display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.35rem 0.7rem; border: 1.5px dashed rgba(19, 33, 27, 0.2); border-radius: 10px; background: none; color: rgba(19, 33, 27, 0.55); font-size: 0.82rem; }
+.mail-rule-add:hover:not(:disabled) { border-color: rgba(19, 33, 27, 0.4); color: #13211b; background: rgba(20, 59, 47, 0.04); }
+.mail-empty { margin: 0; color: rgba(19, 33, 27, 0.55); }
+.mail-activity { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.mail-activity-item { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr) auto; gap: 0.75rem; padding: 0.5rem 0; border-top: 1px solid rgba(19, 33, 27, 0.06); }
+.mail-activity-item:first-child { border-top: 0; }
+.mail-activity-time { color: rgba(19, 33, 27, 0.55); font-variant-numeric: tabular-nums; }
+.mail-activity-subject { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mail-activity-item.sent .mail-activity-detail { color: #2d6a3f; }
+.mail-activity-item.held .mail-activity-detail { color: #7e3512; }
+.mail-activity-item.written .mail-activity-detail { color: #2d6a3f; cursor: help; }
+.mail-activity.with-source .mail-activity-item { grid-template-columns: 9.5rem 14rem minmax(0, 1fr) auto; }
+.mail-activity-source { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: rgba(19, 33, 27, 0.65); }
+.mail-tabs { display: flex; align-items: center; gap: 0.5rem; }
+.mail-tabs .mail-flow-meta { margin-left: auto; }
+.mail-tab { padding: 0.4rem 0.9rem; border: 1px solid rgba(19, 33, 27, 0.25); border-radius: 10px; background: #fff; color: #13211b; font-weight: 600; }
+.mail-tab:hover:not(.active) { background: rgba(20, 59, 47, 0.08); }
+.mail-tab.active { background: #143b2f; color: #f5f6f2; border-color: #143b2f; }
+.mail-mailboxes { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.mail-mailboxes th { text-align: left; font-weight: 600; font-size: 0.78rem; color: rgba(19, 33, 27, 0.55); padding: 0.3rem 0.5rem; }
+.mail-mailboxes td { padding: 0.45rem 0.5rem; border-top: 1px solid rgba(19, 33, 27, 0.06); vertical-align: top; }
+.mail-mailbox-address { font-weight: 600; white-space: nowrap; }
+.mail-mailbox-actions { white-space: nowrap; text-align: right; }
+.mail-mailbox-actions button { margin-left: 0.4rem; }
+.mail-mailbox-error { color: #7e3512; }
+.mail-backfill { color: rgba(19, 33, 27, 0.6); }
+.mail-mailboxes tr.auth-expired td, .mail-mailboxes tr.auth-not_authorized td { color: #7e3512; }
+.mail-auth-panel { border: 1px solid rgba(19, 33, 27, 0.15); border-radius: 10px; padding: 0.75rem 1rem; background: #fff; display: flex; flex-direction: column; gap: 0.5rem; }
+.mail-auth-panel h3 { margin: 0; font-size: 0.95rem; }
+.mail-auth-panel p { margin: 0; }
+.mail-auth-close { margin-left: auto; }
+.mail-auth-code { font-size: 1.6rem; font-weight: 700; letter-spacing: 0.15em; font-variant-numeric: tabular-nums; }
+.mail-auth-paste { display: flex; gap: 8px; }
+.mail-auth-paste input { flex: 1; min-width: 0; padding: 0.5rem 0.7rem; border: 1px solid rgba(19, 33, 27, 0.2); border-radius: 8px; font-size: 0.85rem; }
+@media (max-width: 640px) {
+  .mail-demo { padding: 1rem; }
+  .mail-activity-item, .mail-activity.with-source .mail-activity-item { grid-template-columns: 1fr; gap: 0.15rem; }
+  .mail-mailboxes thead { display: none; }
+  .mail-mailboxes td { display: block; border-top: 0; }
+  .mail-mailboxes tr { display: block; border-top: 1px solid rgba(19, 33, 27, 0.06); padding: 0.4rem 0; }
+}

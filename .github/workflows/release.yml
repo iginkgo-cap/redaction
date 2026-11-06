@@ -1,0 +1,139 @@
+# Build and publish a release when a v* tag is pushed:
+# tests → multi-arch images on GHCR → end-to-end install on a fresh runner → GitHub release with install.sh.
+name: release
+
+on:
+  push:
+    tags: ["v*"]   # deploy/install.sh in the tagged tree already pins this version
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: redaction
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: redaction_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U redaction -d redaction_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies (CPU-only torch)
+        run: |
+          pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.4.0"
+          pip install -r requirements.txt pytest pytest-asyncio httpx "./file-masker[web,mail,dev]"
+      - name: Service tests
+        env:
+          REDACTION_TEST_DATABASE_URL: postgresql://redaction:ci@127.0.0.1:5432/redaction_test
+        run: python -m pytest -q -m "not slow and not api"
+      - name: file-masker tests
+        working-directory: file-masker
+        run: python -m pytest -q
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: file-masker web tests
+        working-directory: file-masker/frontend
+        run: npm ci --no-audit --no-fund && npm test
+      - name: Check the installer renders a valid configuration
+        run: |
+          bash -n deploy/install.sh
+          bash deploy/install.sh --render-only "$RUNNER_TEMP/render" --version ci --registry example.invalid/x
+          docker compose --project-directory "$RUNNER_TEMP/render" -f "$RUNNER_TEMP/render/docker-compose.yml" config --quiet
+
+  images:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: redaction-service
+            context: .
+            file: Dockerfile
+          - name: file-masker
+            context: file-masker
+            file: file-masker/Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Image name
+        id: img
+        run: echo "ref=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${{ matrix.name }}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: |
+            BUILD_VERSION=${{ github.ref_name }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ github.ref_name }}
+            org.opencontainers.image.licenses=AGPL-3.0-only
+          tags: |
+            ${{ steps.img.outputs.ref }}:${{ github.ref_name }}
+            ${{ steps.img.outputs.ref }}:latest
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+
+  e2e:
+    needs: images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GHCR as root (packages may still be private right after the first push)
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Install with the one-command installer
+        run: sudo bash deploy/install.sh --force --http-port 8080
+      - name: Check the API through the gateway
+        run: |
+          TOKEN=$(sudo awk -F': *' '/app token/ {print $2}' /opt/redaction/credentials.txt | awk '{print $1}')
+          curl -fsS -X POST http://127.0.0.1:8080/v2/redact -H "X-Redaction-Token: $TOKEN" \
+            -H 'Content-Type: application/json' \
+            -d '{"namespace":"default","items":[{"id":"t","text":"Call Alice at +1 415 555 0100 or alice@example.com"}]}' \
+            | tee /tmp/redact.json
+          grep -q '\[\[EMAIL_' /tmp/redact.json
+      - name: Re-run (upgrade path) keeps keys and tokens
+        run: |
+          before=$(sudo sha256sum /opt/redaction/.env /opt/redaction/namespaces.yaml)
+          sudo bash deploy/install.sh --force --http-port 8080
+          after=$(sudo sha256sum /opt/redaction/.env /opt/redaction/namespaces.yaml)
+          [ "$before" = "$after" ]
+      - name: Uninstall
+        run: sudo bash deploy/install.sh --uninstall --purge
+      - name: Logs on failure
+        if: failure()
+        run: sudo docker ps -a; sudo docker logs redaction --tail 200 || true
+
+  release:
+    needs: e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${{ github.ref_name }}" deploy/install.sh --title "${{ github.ref_name }}" --generate-notes

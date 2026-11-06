@@ -1,0 +1,79 @@
+# raw_label → PM canonical 映射
+# 不在此表内的 raw_label 一律 drop
+# 详见 docs/features/redaction/2026-05-19-pii-redaction-implementation.md §1.11.2
+
+# HanLP MTL ontonotes（18 类只保留 4 类）
+hanlp:
+  PERSON: PERSON
+  ORG: ORG
+  LOC: ADDRESS
+  FAC: ADDRESS
+  # 显式 drop（NORP / GPE / PRODUCT / EVENT / WORK_OF_ART / LAW / LANGUAGE /
+  # DATE / TIME / PERCENT / MONEY / QUANTITY / ORDINAL / CARDINAL）—— 金融文档里
+  # 数字/金额/日期是业务信息而非 PII，必须 drop 避免污染
+
+# NVIDIA gliner-PII（zero-shot，传入 label 即原样输出）
+nvidia:
+  # 只保留 NER 真正擅长的语义类（PERSON / ADDRESS / ORG）。
+  # 结构化 PII（phone / email / id / bank card）已由 cn_regex + en_regex 严格覆盖，
+  # gliner-PII 在中文短文本上对这些类高频误报（例如把「李明手机号是多少」整句判 PHONE），
+  # 显式不向模型传这些 label 即可避免（zero-shot 模型不会输出未传入的类别）。
+  person name: PERSON
+  home address: ADDRESS
+  organization: ORG
+
+# CN 正则（detectors/cn_regex.py 内硬编码，此处仅声明 canonical）
+cn_regex:
+  CN_PHONE: PHONE
+  CN_LANDLINE: PHONE
+  CN_EMAIL: EMAIL
+  CN_ID_CARD: ID_CARD
+  CN_BANK_CARD: BANK_CARD
+  CN_BUSINESS_ID: BUSINESS_ID
+  CN_USCC: BUSINESS_ID
+  CN_ADDRESS: ADDRESS
+  CN_ACCOUNT_HK: ACCOUNT
+  CN_ACCOUNT_SG: ACCOUNT
+  CN_ACCOUNT_LONG: ACCOUNT
+  CN_INVESTOR_CODE: ACCOUNT
+  CN_DOB: DOB
+  CN_TIN_CN: TIN
+  CN_TIN_US_SSN: TIN
+  CN_TIN_HK: TIN
+  CN_BUSINESS_ID_EIN: BUSINESS_ID
+
+# EN 正则（详见 en_regex_rules.yaml，此处仅声明 canonical）
+en_regex:
+  EMAIL: EMAIL
+  # S5 (round11): 全量 URL 下线，仅保留敏感特征 URL 三条
+  URL_USERINFO: URL
+  URL_CREDENTIAL: URL
+  URL_INTERNAL: URL
+  CREDIT_CARD: BANK_CARD
+  IBAN: BANK_CARD
+  SWIFT_BIC: BANK_CARD
+  CRYPTO_ADDR: CRYPTO_ADDR
+  PASSPORT_GENERIC: ID_CARD
+  PHONE_INTL: PHONE
+  API_KEY_OPENAI: API_KEY
+  API_KEY_AWS: API_KEY
+  API_KEY_GITHUB: API_KEY
+  API_KEY_SLACK: API_KEY
+  API_KEY_GITLAB: API_KEY
+  DOB_EN: DOB
+  IP_ADDRESS: IP_ADDRESS  # D11 回归（D8 曾下线；P7 加固正则过 D8 全部 FP 场景）
+
+# S7 (round11) gazetteer 人名补召回 detector（detectors/gazetteer.py）
+gazetteer:
+  GAZETTEER_PERSON: PERSON
+
+# 角色词黑名单（HanLP 易误识为 PERSON）
+hanlp_role_blacklist:
+  - 甲方
+  - 乙方
+  - 丙方
+  - 丁方
+  - 买方
+  - 卖方
+  - 出借方
+  - 借款方
