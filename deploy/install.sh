@@ -8,7 +8,7 @@
 # the existing keys, tokens and data. Run with --help for options.
 set -euo pipefail
 
-VERSION="v1.0.0-rc.2"                 # set by the release; override with --version
+VERSION="v1.0.0-rc.3"                 # set by the release; override with --version
 REGISTRY="ghcr.io/iginkgo-cap"   # override with --registry
 INSTALL_DIR=/opt/redaction
 MIN_CPUS=4

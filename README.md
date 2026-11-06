@@ -78,7 +78,7 @@ curl -s https://redact.example.com/v2/redact \
 ```json
 {"items":[{"id":"m1","text":"Please call [[PERSON_1]] at [[PHONE_1]]"}],
  "entities":[{"placeholder":"[[PERSON_1]]","value":"Alice Chen","kind":"PERSON","new":true, "...": "..."}],
- "degraded":false,"detectors_failed":[],"version":"v1.0.0-rc.2"}
+ "degraded":false,"detectors_failed":[],"version":"v1.0.0-rc.3"}
 ```
 
 Restore (e.g. after an LLM has answered using the placeholders):

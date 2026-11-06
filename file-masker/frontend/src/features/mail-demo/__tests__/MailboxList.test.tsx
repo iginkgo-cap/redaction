@@ -61,7 +61,10 @@ describe('MailboxList (LOOK-6764)', () => {
       />,
     );
     const rows = r.all('tbody tr').map((tr) => [...tr.querySelectorAll('td')].map((td) => td.textContent!.trim()));
-    expect(rows[0].slice(0, 5)).toEqual(['lq-ops@example.com', 'Gmail', 'Folder', 'Not authorized', '10:00:30']);
+    // 页面按浏览器本地时区显示时间；期望值跟着运行环境的时区算，CI（UTC）与本机（UTC+8）都成立
+    const lastPoll = new Date('2026-10-20T10:00:30+08:00').toLocaleTimeString('en-GB');
+    expect(lastPoll).toMatch(/^\d{2}:00:30$/);
+    expect(rows[0].slice(0, 5)).toEqual(['lq-ops@example.com', 'Gmail', 'Folder', 'Not authorized', lastPoll]);
     expect(rows[1].slice(0, 4)).toEqual(['ops@look.example', 'Microsoft 365', 'Folder', 'Authorized as ops@look.example']);
     expect(rows[1][4]).toContain('catching up from 2026-10-14');
     expect(rows[2].slice(0, 4)).toEqual(['demo@example.com', 'IMAP', 'Forward', 'Password']);

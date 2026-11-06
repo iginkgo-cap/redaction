@@ -19,6 +19,8 @@
     {"id": "landline_grouped", "text": "运营中心 直拨 021-6888 7102", "include": [["PHONE", "021-6888 7102"]], "exclude": []},
     {"id": "landline_paren_ext", "text": "总机（0755）2688-1234 转 801", "include": [["PHONE", "（0755）2688-1234 转 801"]], "exclude": []},
     {"id": "landline_not_date", "text": "编号 02168887102，日期 2026-11-05", "include": [], "exclude": [["PHONE", "02168887102"], ["PHONE", "2026-11-05"]]},
+    {"id": "landline_en_label", "text": "Tel 021-6888 7102 / Fax 0755 2688 1234", "include": [["PHONE", "021-6888 7102"], ["PHONE", "0755 2688 1234"]], "exclude": []},
+    {"id": "phone_followed_by_number", "text": "021-6888 7102 2026-11-05 到期；手机 138 0176 5924 2026-11-05", "include": [["PHONE", "021-6888 7102"], ["PHONE", "138 0176 5924"]], "exclude": []},
     {"id": "card_grouped_luhn_valid", "text": "招商银行 6225 8801 2345 6783（户名", "include": [["BANK_CARD", "6225 8801 2345 6783"]], "exclude": [["PHONE", "8801 2345 6783"]]}
   ]
 }

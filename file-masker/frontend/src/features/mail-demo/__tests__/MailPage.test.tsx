@@ -87,7 +87,9 @@ describe('MailPage (LOOK-6764)', () => {
     expect(text).toContain('Written · 7 replacements · 1 attachment');
     expect(text).toContain('Sent · 2 replacements · 2 attachments');
     expect(r.all('.mail-activity-detail')[1].getAttribute('title')).toBe('/srv/masked/lq/x');
-    expect(r.all('.mail-activity-time')[0].textContent).toMatch(/^20 Oct/); // 记录跨天，时间前带日期
+    // 记录跨天，时间前带日期。按浏览器本地时区显示，期望的日期跟着运行环境的时区算（UTC-8 下是 19 Oct）
+    const day = new Date('2026-10-20T10:02:01+08:00').toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+    expect(r.all('.mail-activity-time')[0].textContent).toMatch(new RegExp(`^${day}, \\d{2}:\\d{2}:\\d{2}$`));
     expect(r.all('.mail-activity-source')).toHaveLength(0); // 单邮箱不显示来源列
   });
 

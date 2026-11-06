@@ -333,6 +333,10 @@ async def test_座机(detector) -> None:
         ("总机（0571）8765432", "（0571）8765432"),
         ("电话 021-68887102-801", "021-68887102-801"),
         ("电话 021-6888 7102 转 801", "021-6888 7102 转 801"),
+        # 英文签名：标签后直接跟空格
+        ("Tel 021-6888 7102", "021-6888 7102"),
+        ("Fax 0755 2688 1234", "0755 2688 1234"),
+        ("Phone (021) 6888 7102", "(021) 6888 7102"),
     ]:
         phones = [s["text"] for s in await _detect(detector, text) if s["canonical"] == "PHONE"]
         assert phones == [want], text
@@ -350,3 +354,14 @@ async def test_座机_不误命中(detector) -> None:
     ]:
         phones = [s for s in await _detect(detector, text) if s["canonical"] == "PHONE"]
         assert phones == [], text
+
+
+async def test_号码后紧跟另一串数字仍识别(detector) -> None:
+    # 表格/签名里号码后面常跟另一个号码或日期
+    for text, want in [
+        ("联系 021-6888 7102 13801765924", ["021-6888 7102", "13801765924"]),
+        ("021-6888 7102 2026-11-05 到期", ["021-6888 7102"]),
+        ("手机 138 0176 5924 2026-11-05 到期", ["138 0176 5924"]),
+    ]:
+        phones = sorted(s["text"] for s in await _detect(detector, text) if s["canonical"] == "PHONE")
+        assert phones == sorted(want), text
